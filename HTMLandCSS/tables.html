@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .div2 {
+            margin-top: 50px;
+        }
+
+
+        .table1 th,
+        .table1 td,
+        .table2 td,
+        .table4 td,
+        .table4 th {
+            border: 2px solid gray;
+            padding: 10px 15px;
+
+        }
+
+        .table1 {
+            width: 100%;
+        }
+
+        .table1 td:first-child {
+            width: 30%;
+            background: linear-gradient(45deg, #EECFBA, #C5DDE8);
+        }
+
+        .table1,
+        .table2 {
+            width: 600px;
+            border: 3px coral solid;
+            border-collapse: collapse;
+        }
+
+        .table2 th {
+            width: 33%;
+        }
+
+        .table3 {
+            border: 1px solid #69C;
+            border-collapse: separate;
+            /*collapse - dont hide or td background*/
+            empty-cells: hide;
+
+        }
+
+        .table3 th,
+        .table3 td {
+            border: 2px solid #50C
+        }
+
+        .table5,
+        .table6 {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            font-size: 14px;
+            background: white;
+            width: 70%;
+            max-width: 70%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .table5 th {
+            font-weight: normal;
+            color: #039;
+            border-bottom: 2px solid #6678b1;
+            padding: 10px 8px;
+        }
+
+        .table5 td {
+            color: #669;
+            padding: 9px 8px;
+            transition: .3s linear;
+        }
+
+        .table5 tr:hover td {
+            /* color: #6699ff; */
+            background-color: #6699ff;
+            ;
+        }
+
+        .table6 th {
+            font-weight: normal;
+            font-size: 13px;
+            background: #b9c9fe;
+            border-top: 4px solid#aabcfe;
+            border-bottom: 1px solid white;
+            color: #039;
+            padding: 8px;
+        }
+
+        .table6 td {
+            background: #e8edff;
+            border-bottom: 1px solid white;
+            color: #669;
+            border-top: 1px solid transparent;
+            padding: 8px;
+        }
+        .table6 tr:hover td{
+            background: #ccddff;
+        }
+        .table6 tr:nth-child(2n)
+        { background: rgb(145, 57, 57);}
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <table class="table1">
+            <caption>Names</caption>
+            <tbody>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Autor</th>
+                    <th>Year</th>
+                </tr>
+                <tr>
+                    <td>ASP.net</td>
+                    <td>Metiy Mackdonald</td>
+                    <td>2003</td>
+                </tr>
+                <tr>
+                    <td>HTML</td>
+                    <td>Mackmentiy Donald</td>
+                    <td>2004</td>
+                </tr>
+                <tr>
+                    <td>Used PHP5</td>
+                    <td>Mak Metiy</td>
+                    <td>2005</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="div2">
+        <table class="table2">
+            <th>
+            <td>ASP.net</td>
+            <td>Metiy Mackdonald</td>
+            <td>2003</td>
+            </th>
+            <th>
+            <td>HTML</td>
+            <td>Mackmentiy Donald</td>
+            <td>2004</td>
+            </th>
+            <th>
+            <td>Used PHP5</td>
+            <td>Mak Metiy</td>
+            <td>2005</td>
+            </th>
+        </table>
+    </div>
+    <div>
+        <table>
+            <caption>CollGroups</caption>
+            <colgroup>
+                <col span="2" style="background-color: khaki;">
+                <col style="background-color: lightcyan;">
+            </colgroup>
+            <tr>
+                <th>№ n/n</th>
+                <th>Name</th>
+                <th>Coast</th>
+
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Карандаш цветной</td>
+                <td>20.00</td>
+
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Линейка 20 см</td>
+                <td>30.00</td>
+
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table4">
+            <caption>Товары</caption>
+            <thead>
+                <tr>
+                    <th>№ n/n</th>
+                    <th>Наименование товара</th>
+                    <th>Еденицы измерения</th>
+                    <th>Количество</th>
+                    <th>Цена за ед. изм., грн</th>
+                    <th>Стоимость, грн.</th>
+                </tr>
+
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: right;">Итого:</td>
+                    <td>1168,80</td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td>1.</td>
+                    <td>Томаты свежие</td>
+                    <td>кг</td>
+                    <td>69.00</td>
+                    <td>15.20</td>
+                    <td>1048.80</td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>Огурцы свежие</td>
+                    <td>кг</td>
+                    <td>48.00</td>
+                    <td>2.20</td>
+                    <td>120.80</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <table class="table3">
+            <tr>
+                <th>Company</th>
+                <th>Q1</th>
+                <th>Q2</th>
+                <th>Q3</th>
+            </tr>
+            <tr>
+                <td>Microsoft</td>
+                <td>20.3</td>
+                <td>30.5</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Google</td>
+                <td>50.2</td>
+                <td>40.63</td>
+                <td>45.23</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table5">
+            <tr>
+                <th>Employee</th>
+                <th>Salary</th>
+                <th>Bonus</th>
+                <th>Supervisor</th>
+            </tr>
+            <tr>
+                <td>Stephen C. Cox</td>
+                <td>$300</td>
+                <td>$50</td>
+                <td>Bob</td>
+            </tr>
+            <tr>
+                <td>Josephin Tan</td>
+                <td>$150</td>
+                <td>-</td>
+                <td>Annie</td>
+            </tr>
+            <tr>
+                <td>Joyce Ming</td>
+                <td>$200</td>
+                <td>$35</td>
+                <td>Andy</td>
+            </tr>
+            <tr>
+                <td>James A. Pentel</td>
+                <td>$175</td>
+                <td>$25</td>
+                <td>Annie</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table6">
+            <tr>
+                <th>Employee</th>
+                <th>Salary</th>
+                <th>Bonus</th>
+                <th>Supervisor</th>
+            </tr>
+            <tr>
+                <td>Stephen C. Cox</td>
+                <td>$300</td>
+                <td>$50</td>
+                <td>Bob</td>
+            </tr>
+            <tr>
+                <td>Josephin Tan</td>
+                <td>$150</td>
+                <td>-</td>
+                <td>Annie</td>
+            </tr>
+            <tr>
+                <td>Joyce Ming</td>
+                <td>$200</td>
+                <td>$35</td>
+                <td>Andy</td>
+            </tr>
+            <tr>
+                <td>James A. Pentel</td>
+                <td>$175</td>
+                <td>$25</td>
+                <td>Annie</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

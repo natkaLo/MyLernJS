@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .clearfix::before,
+        .clearfix::after
+        {
+            content: "";
+            display: table;
+        }
+        .clearfix::after
+        {
+            clear: bouth;
+        }
+        .wrap{
+            width: 90%;
+            margin: 20px auto;
+            background-color:gray;
+            overflow: hidden;
+            border-radius: 3px 5px 50px;
+            box-shadow: yellow 2px 4px;
+           
+        }
+         .block{
+            width: 25%;
+            float:left;
+            margin: 10px;
+            padding: 10px;
+            background-color: blanchedalmond;
+            max-height: 500px;
+            overflow:auto;
+            white-space:pre-wrap;
+            border:ridge  coral 2px;
+            border-bottom: solid 5px crimson;
+           
+        }
+        .circle
+        {
+             margin-left: 50%;
+            color: white; 
+            width: 100px;
+            height: 100px;
+            background-color: darkblue;
+            border-radius: 50%;
+            box-shadow: yellow 2px 4px;
+           
+        }
+        .hcircle
+        {
+            text-align:center;
+            padding-top:40%;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap clearfix">
+    <p class="block">Прежде всего дальнейшее развитие различных форм деятельности позволяет выполнять важные задания по разработке укрепления демократической системы. Повседневная практика показывает, что высокотехнологичная концепция общественной системы создаёт предпосылки качественно новых шагов для дальнейших направлений развития. Равным образом реализация намеченных плановых заданий играет важную роль в формировании форм воздействия.</p>
+    <p class = "block">Не следует, однако, забывать, что управление и развитие структуры требует анализа новых принципов формирования материально-технической и кадровой базы. Прежде всего курс на социально-ориентированный национальный проект напрямую зависит от модели развития. Прежде всего управление и развитие структуры в значительной степени обуславливает создание модели развития.</p>
+    <p class = "block">Таким образом курс на социально-ориентированный национальный проект способствует повышению качества форм воздействия. Повседневная практика показывает, что курс на социально-ориентированный национальный проект в значительной степени обуславливает создание укрепления демократической системы. Равным образом новая модель организационной деятельности требует анализа дальнейших направлений развития.</p>
+    </div>
+    <div class="circle">
+        <h5 class="hcircle"> This is circle</h5>
+    </div>
+</body>
+</html>

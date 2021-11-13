@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        p{
+            font-style: italic;
+        }
+        p::before,p::after{background-color: rgb(220, 222, 245);}
+        p::before{content: '/t';}
+        p::after{content: 'bb';}
+        ol{
+          list-style-type: none;  
+           counter-reset: number;
+        }
+        ol li::before{
+            content: counter(number)')';
+            counter-increment: number;
+        }
+        ul{
+            list-style:  inside url(images/crop_32.png);
+            
+        }
+        .liiii::before{
+            content: none;
+        }
+        ul li::after{
+            content: '--';
+        }
+        ol ul {color: blue;}
+        ul li {font-style: italic;}
+    </style>
+</head>
+<body>
+    <p>Идейные соображения высшего порядка, а также сложившаяся структура организации создаёт предпосылки качественно новых шагов для поэтапного и последовательного развития общества.</p>
+    <ol>
+        <li>first</li>
+        <li>second</li>
+        <li class="liiii">
+            <ul>
+                <li>first ul</li>
+                <li>second ul</li>
+            </ul>
+        </li>
+    </ol>
+</body>
+</html>
