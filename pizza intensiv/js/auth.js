@@ -48,11 +48,11 @@ const auth = () => {
         // console.log("Click");
         //console.dir(modalAuth);//вывод в виде объекта
         modalAuth.style.display = 'flex';
-    })
+    });
     const closeAuth = document.querySelector('.close-auth');
     closeAuth.addEventListener('click', () => {
         modalAuth.style.display = 'none';
-    })
+    });
     //const logInForm = document.querySelector('#logInForm');
     //or
     const logInForm = document.getElementById('logInForm');
