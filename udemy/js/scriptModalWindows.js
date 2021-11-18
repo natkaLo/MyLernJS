@@ -1,3 +1,4 @@
+"use strict";
 // alert("1");
 // const result = confirm("Are you here");
 // console.log(result);
