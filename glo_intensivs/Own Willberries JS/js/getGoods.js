@@ -1,11 +1,8 @@
-const search = function(){
-    const input = document.querySelector('.search-block > input');
-    const searchBtn = document.querySelector('.search-block > button');
-    //console.log(input);
-    //console.log(searchBtn);
+const getGoods = () => {
 
-
-    const renderGoods = (goods) => {
+    const links = document.querySelectorAll(".navigation-link");
+    //console.log(links);
+   const renderGoods = (goods) => {
         //console.log(goods);
         const goodsContainer = document.querySelector(".long-goods-list");
         goodsContainer.innerHTML = '';
@@ -33,18 +30,15 @@ const search = function(){
           
         });
    };
-    const getData = (value) => {
+    const getData = (value, category) => {
         fetch("./db/db.json")
         .then((response) => 
             //json - получаем объект. response.text() - получим не объект, а текст
              response.json())
         .then((data) => {
             //console.log(data);
-            const array = data.filter(good =>{
-                return good.name.toLowerCase().includes(value.toLowerCase());
-                
-            });
-          // console.log(value);
+            const array = category?data.filter((item)=>item[category] === value) : data; //return item.gender === "Mens";
+           
           localStorage.setItem("goods", JSON.stringify(array));
 
           if(window.location.pathname !== "/glo_intensivs/Own%20Willberries%20JS/goods.html")
@@ -58,21 +52,24 @@ const search = function(){
         });
     };
 
-
-    // input.addEventListener('input',(event)=>{
-    //    // console.log("ввод символа");
-    //    console.log(event.target.value);
-    // });
-    try{
-        searchBtn.addEventListener('click', ()=>{
-            //console.log(input.value);
-            getData(input.value);
+    links.forEach((link) => {
+        //console.log(link);
+        link.addEventListener('click', (event)=>{
+            event.preventDefault();
+           // console.log(link);
+           const linkValue = link.textContent;
+           const category = link.dataset.field;
+           //console.log(category);
+            getData(linkValue, category);
         });
+       
+    });
+    if(localStorage.getItem('goods') && window.location.pathname === "/glo_intensivs/Own%20Willberries%20JS/goods.html"){
+        renderGoods(JSON.parse(localStorage.getItem('goods')));
     }
-    catch(e)
-    {
-        console.error(e.message);
-    }
+  //  localStorage.setItem("goods", JSON.stringify([1,2,3,4,5]));//stringify({name: "all"}))
+  //  const arr = (JSON.parse(localStorage.getItem("goods")));
+  //  console.log(arr);
+   // localStorage.removeItem("goods");
 };
-
-search();
+getGoods();
