@@ -2,6 +2,7 @@ const cart = function(){
     const cartBtn = document.querySelector('.button-cart');
     const cart = document.querySelector('#modal-cart');
     const closeBtn = cart.querySelector('.modal-close');
+    const goodsContainer = document.querySelector('.long-goods-list');
     // cartBtn.onclick = function(){
     //     console.log("click");
     // };
@@ -25,5 +26,28 @@ const cart = function(){
         //закрываем модалное окно с корзиной
         cart.style.display = '';
     });
+
+    if(goodsContainer)
+    {
+        goodsContainer.addEventListener('click',(e)=>{
+            e.preventDefault();
+            const buttonToCart = e.target.closest('.add-to-cart');  //closeset - поднимается наверх по элементам, содержащим кликнутый элемент и ищет класс
+            if(buttonToCart)      
+            {
+                //console.log(buttonToCart);
+                //получим id товара
+                const goodId = buttonToCart.dataset.id;
+                //console.log(goodId);
+                //получим из localStorage наш массив товаров 
+                const goods = JSON.parse(localStorage.getItem('goods'));
+               // console.log(goods);
+                //найдем кликнутую карточку
+                const clickedGood = goods.find(good => good.id === goodId);
+                console.log(clickedGood);
+                //найденный элемент нужно сложить в новый массив
+            }
+        });
+    }
+
 };
 cart();

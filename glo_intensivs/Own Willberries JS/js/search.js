@@ -47,13 +47,14 @@ const search = function(){
           // console.log(value);
           localStorage.setItem("goods", JSON.stringify(array));
 
-          if(window.location.pathname !== "/glo_intensivs/Own%20Willberries%20JS/goods.html")
+          if(window.location.pathname.toLocaleLowerCase().includes('goods.htm'))
           {
-               window.location.href = './goods.html';
+            renderGoods(array);
           }
           else
           {
-            renderGoods(array);
+            window.location.href = './goods.html';
+           
           }
         });
     };

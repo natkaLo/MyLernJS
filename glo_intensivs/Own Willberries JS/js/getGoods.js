@@ -1,6 +1,8 @@
 const getGoods = () => {
 
     const links = document.querySelectorAll(".navigation-link");
+    const linkViewAll = document.querySelector(".more");
+   
     //console.log(links);
    const renderGoods = (goods) => {
         //console.log(goods);
@@ -40,14 +42,13 @@ const getGoods = () => {
             const array = category?data.filter((item)=>item[category] === value) : data; //return item.gender === "Mens";
            
           localStorage.setItem("goods", JSON.stringify(array));
-
-          if(window.location.pathname !== "/glo_intensivs/Own%20Willberries%20JS/goods.html")
+          if(window.location.pathname.toLocaleLowerCase().includes('goods.html'))
           {
-               window.location.href = './goods.html';
+            renderGoods(array);
           }
           else
           {
-            renderGoods(array);
+            window.location.href = './goods.html';
           }
         });
     };
@@ -59,17 +60,28 @@ const getGoods = () => {
            // console.log(link);
            const linkValue = link.textContent;
            const category = link.dataset.field;
-           //console.log(category);
+          // console.log(category);
             getData(linkValue, category);
         });
        
     });
-    if(localStorage.getItem('goods') && window.location.pathname === "/glo_intensivs/Own%20Willberries%20JS/goods.html"){
+
+   
+
+    if(localStorage.getItem('goods') && (window.location.pathname.toLocaleLowerCase().includes('goods.htm'))){
         renderGoods(JSON.parse(localStorage.getItem('goods')));
     }
   //  localStorage.setItem("goods", JSON.stringify([1,2,3,4,5]));//stringify({name: "all"}))
   //  const arr = (JSON.parse(localStorage.getItem("goods")));
   //  console.log(arr);
    // localStorage.removeItem("goods");
+
+   if(linkViewAll)
+   {
+        linkViewAll.addEventListener('click', (event)=>{
+        event.preventDefault();
+        getData();
+      });
+  }
 };
 getGoods();
