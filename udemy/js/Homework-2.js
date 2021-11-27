@@ -26,26 +26,49 @@ const personalMovieDB = {
 };
 let count = 0;
 let  a, b;
-while(count <2)
-{
-        a = prompt("Один из последних просмотренных фильмов?","");
-        console.log(a);
-        if(a ==="")
-        {
-            continue;
-        }
-        b= prompt("На сколько оцените его?","");
-        personalMovieDB.movies[a] = b;
-        count++;
-}
+// while(count < 2)
+// {
+//         a = prompt("Один из последних просмотренных фильмов?","");
+//         //console.log(a);
+//         if(a == null ||  a.length == 0 || a.length > 50)
+//         {
+//             continue;
+//         }
+//         b= prompt("На сколько оцените его?","");
+//         personalMovieDB.movies[a] = b;
+//         count++;
+// }
+// for(let i = 0; i < 2; i++)
+// {
+//     a = prompt("Один из последних просмотренных фильмов?","");
+//     if(a == null ||  a.length == 0 || a.length > 50)
+//     {
+//         i--;
+//         continue;
+//     }
+//      b= prompt("На сколько оцените его?","");
+//      personalMovieDB.movies[a] = b;
+// }
+do{
+    a = prompt("Один из последних просмотренных фильмов?","");
+    if(a == null ||  a.length == 0 || a.length > 50)
+    {
+       continue;
+    }
+     b= prompt("На сколько оцените его?","");
+     personalMovieDB.movies[a] = b;
+     count++;
+}while(count < 2);
 
 console.log(personalMovieDB);
 
-if(personalMovieDB[0] < 10){
-    alert("Просмотрено довольно мало фильмов");}
-else if(personalMovieDB[0] < 30 ){
-    alert("Вы классический зритель");}
-else if(personalMovieDB[0] >= 30 ){
+if(personalMovieDB.count < 10){
+    alert("Просмотрено довольно мало фильмов");
+}
+else if(personalMovieDB.count < 30 ){
+    alert("Вы классический зритель");
+}
+else if(personalMovieDB.count >= 30 ){
     alert("Вы киноман");
 }
 else{
