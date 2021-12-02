@@ -89,13 +89,13 @@ function log(a,b,c){
     console.log(a);
     console.log(b);
     console.log(c);
-};
+}
 
 const num = [2,5,7];
 log(...num);// массив разложиться на элементы (cпрет орератор)
 //cпрет орератор работает и для массивов
-const Array = ["a","b"];
-const NewSpretArr = [...Array];
+const rArray = ["a","b"];
+const NewSpretArr = [...rArray];
 console.log(NewSpretArr);
 
 //cпрет орератор работает и для объектов
