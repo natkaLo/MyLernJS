@@ -1,0 +1,19 @@
+
+button {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 100px;
+  height: 40px;
+  background-color: yellow;
+  border: none;
+}
+.blue{
+  background-color:blue;
+}
+.red{
+  background-color:red;
+}
+.btn-block{
+  height: 60px;
+  background-color:gray;
+}
