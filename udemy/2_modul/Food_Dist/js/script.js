@@ -1,5 +1,7 @@
 window.addEventListener('DOMContentLoaded', ()=>{
-
+//////////////////////////////////////////////////////////////////////////////
+//tabs
+//////////////////////////////////////////////////////////////////////////////
     const tabs = document.querySelectorAll('.tabheader__item'),
         tabsContent = document.querySelectorAll('.tabcontent'),
         tabsParent = document.querySelector('.tabheader__items');
@@ -36,4 +38,18 @@ window.addEventListener('DOMContentLoaded', ()=>{
     });
     hideTabContent();
     showTabContent();
+ //////////////////////////////////////////////////////////////////////////////
+//timer
+//////////////////////////////////////////////////////////////////////////////
+    const deadLine = '2022-05-11';
+    //ф-ция определяет разницу между дедлайном и текущем временем
+    function getTimeRemaining(endtime){
+        //endtime приходит в формате строки '2022-05-11'
+        //получим разницу между endtime и текущей датой в кол-ве миллисек
+        const t = Date.parse(endtime) - Date.parse(new Date());
+        //разницу нужно превратить в кол-во дней,часов,минут
+        //Math.floor() - округление до ближайщего целого
+        const days = Math.floor(t/(1000*60*60*24));//1000*60*60*24 - кол-во миллисек. в сутках
+        
+    }
 });
