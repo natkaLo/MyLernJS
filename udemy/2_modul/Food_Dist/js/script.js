@@ -96,4 +96,149 @@ window.addEventListener('DOMContentLoaded', ()=>{
         }
     }
     setClock('.timer',deadLine);
+//////////////////////////////////////////////////////////////////////////////
+//модальное окно
+//////////////////////////////////////////////////////////////////////////////
+    const modalTriggers = document.querySelectorAll('[data-modal]');//'[...]' - получение через data аттрибут
+    const modalWindow = document.querySelector('.modal');
+
+    function ShowHideModalWindow(wnd){
+        
+        wnd.classList.toggle('show');
+
+         //чтобы если на экране показано модальное окно - прокрутка документа не работала
+        let overflow = '';
+        if(wnd.classList.contains('show')){
+            overflow = 'hidden';
+        }
+        document.body.style.overflow = overflow;
+        // останавливаем таймер
+        //clearInterval(modalTimerID);
+
+
+        //  if(wnd.classList.contains('show')){
+        //         wnd.classList.add('hide');
+        //         wnd.classList.remove('show');
+        //  }
+        //  else{
+            
+        //      wnd.classList.add('show');
+        //      wnd.classList.remove('hide');
+        //  }
+    }
+
+    modalTriggers.forEach(trigger=>{
+        trigger.addEventListener('click', () => ShowHideModalWindow(modalWindow));
+    });
+    modalWindow.querySelector('[data-close]').addEventListener('click', () =>ShowHideModalWindow(modalWindow));
+
+    modalWindow.addEventListener('click', (event)=>{
+       if(event.target === modalWindow){
+            ShowHideModalWindow(modalWindow);
+       }
+     });
+
+     document.addEventListener('keydown',(e)=>{
+        if(e.code ==='Escape' && modalWindow.classList.contains('show')){
+            ShowHideModalWindow(modalWindow);
+        }
+    });
+
+    //вызов модального окна по таймеру
+    //const modalTimerID = setInterval(() => ShowHideModalWindow(modalWindow), 5000);
+
+    //вызов модального окна по скролу к концу документа
+
+    //window.pageYOffset - прокрученная часть
+    // document.documentElement.clientHeight - видимая часть документа
+    // document.documentElement.scrollHeight - высота всего сайта
+
+    function showModalByScroll(){
+        if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            ShowHideModalWindow(modalWindow);
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+    //deлаем ф-цию колбек showModalByScroll чтобы в ней убрать листенера. При повторной прокрутке до конца документа окно не покажется
+    window.addEventListener('scroll', showModalByScroll);
+
+ //////////////////////////////////////////////////////////////////////////////
+//Наше меню на день - используем классы для карточек
+//////////////////////////////////////////////////////////////////////////////
+class MenuCard{
+    constructor(src, alt, title, description, price, parentSelector,...classes){
+        this.src = src;
+        this.alt = alt;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.classes = classes;//массив
+        this.parent = document.querySelector(parentSelector);
+        this.transfer = 27;
+        this.changeToUAH();
+    }
+    // из долларов в гривны
+     changeToUAH(){
+        this.price = this.price * this.transfer;
+    }
+   // формирование верстки
+    render(){
+        const element = document.createElement('div');
+        //обработаем массив classes
+        if(this.classes.length === 0){
+            this.element = 'menu__item';
+            element.classList.add(this.element);
+        }
+        else{
+        this.classes.forEach(className=> element.classList.add(className));
+        }
+
+        element.innerHTML = ` 
+            <div class="menu__item">
+            <img src=${this.src} alt=${this.alt}>
+            <h3 class="menu__item-subtitle">${this.title}</h3>
+            <div class="menu__item-descr">${this.description}</div>
+            <div class="menu__item-divider"></div>
+                <div class="menu__item-price">
+                    <div class="menu__item-cost">Цена:</div>
+                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                </div>
+            </div>
+    `;
+      this.parent.append(element);//помещаем элемент на страницу в родительский элемент
+     }
+ }
+   
+   // const vegy = new MenuCard("img/tabs/vegy.jpg","vegy",'Меню "Фитнес"','Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей.
+   // Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',229,'.container');
+     //console.log(document.querySelector('.menu .menu__field .container'));
+    new MenuCard(
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес"',
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        9,
+        '.menu .menu__field .container',
+        'menu__item',
+        'big'
+
+    ).render();
+    new MenuCard(
+        "img/tabs/elite.jpg",
+        "elite",
+        'Меню “Премиум”',
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        15,
+        '.menu .menu__field .container'
+        
+    ).render();
+    new MenuCard(
+        "img/tabs/post.jpg",
+        "post",
+        'Меню "Постное"',
+        'Меню "Постное" - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        12,
+        '.menu .menu__field .container',
+        'menu__item'
+    ).render();
 });
