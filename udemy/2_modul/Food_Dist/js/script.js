@@ -241,13 +241,14 @@ class MenuCard{
         '.menu .menu__field .container',
         'menu__item'
     ).render();
-    //////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //отправка форм на сервер
 //////////////////////////////////////////////////////////////////////////////
 const forms = document.querySelectorAll('form');
 
 const message = {
-    loading: 'Загрузка',
+    //loading: 'Загрузка',
+    loading:'img/form/spinner.svg',
     success: 'Спасибо! Скоро мы с Вами свяжемся',
     failure: 'Что-то пошло не так...'
 };
@@ -255,81 +256,131 @@ forms.forEach(item =>{
     postData(item);
 });
 //отправка данных на сервер без перезагрузки страницы
-function postData(form){
-    form.addEventListener('submit',(e)=>{
-        e.preventDefault();
+    function postData(form){
+        form.addEventListener('submit',(e)=>{
+            e.preventDefault();
 
-        //создание нового блока на странице, куда будет выводиться сообщение о состоянии оправки формы
-        const statusMessage = document.createElement('div');
-        statusMessage.classList.add('status');
-        statusMessage.textContent = message.loading;
-        form.append(statusMessage);
+            //простое некрасивое оповещение пользователя
+            //создание нового блока на странице, куда будет выводиться сообщение о состоянии оправки формы
+            // const statusMessage = document.createElement('div');
+            // statusMessage.classList.add('status');
+            // statusMessage.textContent = message.loading;
+            // form.append(statusMessage);
 
-        const request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        //
-        //form data - получение данных из формы с помощью объекта FormData
-        //и отправка на сервер в виде FormData
-        //
+            //сообщение с картинкой
+            const statusMessageImg = document.createElement('img');
+            statusMessageImg.src = message.loading;
+            statusMessageImg.style.cssText = `
+                display:block;
+                margin:0 auto;
+            `;
+           // form.append(statusMessageImg);// иногда ломает верстку
+           form.insertAdjacentElement('afterend',statusMessageImg);
 
-        //здесь важно, чтобы в html файле у всех контролов формы (например у input) был аттрибут name
-        //этот заголовок устанавливать  не нужно!!! Получим пустой объект от сервера
-        // //request.setRequestHeader('Content-type','multipart/form-data');
-        // const formData = new FormData(form);
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            //
+            //form data - получение данных из формы с помощью объекта FormData
+            //и отправка на сервер в виде FormData
+            //
 
-        // request.send(formData);
+            //здесь важно, чтобы в html файле у всех контролов формы (например у input) был аттрибут name
+            //этот заголовок устанавливать  не нужно!!! Получим пустой объект от сервера
+            // //request.setRequestHeader('Content-type','multipart/form-data');
+            // const formData = new FormData(form);
 
-        // request.addEventListener('load',()=>{
-        //     if(request.status === 200){
-        //         console.log(request.response);
-        //         statusMessage.textContent = message.success;
-        //         //очистка полей формы
-        //         form.reset();
-        //         //убираем сообщение о статусе
-        //         setTimeout(()=>{
-        //             statusMessage.remove();
-        //         },2000);
-        //     }
-        //     else{
-        //         statusMessage.textContent = message.failure;
-        //     }
+            // request.send(formData);
 
-        // });
-        //
-        //Отправка на сервер в формате JSON
-        //
-        //тут уже нужен заголовок
-        request.setRequestHeader('Content-type','application/json');
-        const formData = new FormData(form);
+            // request.addEventListener('load',()=>{
+            //     if(request.status === 200){
+            //         console.log(request.response);
+            //         statusMessage.textContent = message.success;
+            //         //очистка полей формы
+            //         form.reset();
+            //         //убираем сообщение о статусе
+            //         setTimeout(()=>{
+            //             statusMessage.remove();
+            //         },2000);
+            //     }
+            //     else{
+            //         statusMessage.textContent = message.failure;
+            //     }
 
-        //нужно превратить FormData в обычный объект для JSON
-        const object = {};
-        formData.forEach(function(value,key){
-            object[key] = value;
+            // });
+            //
+            //Отправка на сервер в формате JSON
+            //
+            //тут уже нужен заголовок
+            request.setRequestHeader('Content-type','application/json');
+            const formData = new FormData(form);
+
+            //нужно превратить FormData в обычный объект для JSON
+            const object = {};
+            formData.forEach(function(value,key){
+                object[key] = value;
+            });
+
+            const json = JSON.stringify(object);
+
+            request.send(json);
+
+            request.addEventListener('load',()=>{
+                if(request.status === 200){
+                    console.log(request.response);
+                      //показ формы о загрузке
+                      showThanksModal(message.success);
+                //  statusMessage.textContent = message.success;
+                    //очистка полей формы
+                    form.reset();
+                    //убираем сообщение о статусе
+                    // setTimeout(()=>{
+                    //     statusMessage.remove();
+                    // },2000);
+                    //убираем спиннер
+                    setTimeout(()=>{
+                        statusMessageImg.remove();
+                    },2000);
+                  
+                }
+                else{
+                    //statusMessage.textContent = message.failure;
+                    //показ формы о загрузке
+                    showThanksModal(message.failure);
+                }
+
+            });
         });
+    }
+    //красивое оповещение пользователя
+    function showThanksModal(message){
+        //будем скрывать существующее модальное окно и создавать новое со статусом
+        const prevModalDialog = modalWindow.querySelector('.modal__dialog');
+      
+        prevModalDialog.classList.add('hide');
 
-        const json = JSON.stringify(object)
+        if(!modalWindow.classList.contains('show')){
+            ShowHideModalWindow(modalWindow);
+        }
+        //cоздание нового окна
+        const thankModal = document.createElement('div');
+        thankModal.classList.add('modal__dialog');
+        thankModal.innerHTML = `
+            <div class="modal__content">
+                 <div data-close class="modal__close" data-close>&times;</div>
+                 <div class="modal__title">${message}</div>
+             </div>
+        `;
 
-        request.send(json);
+        modalWindow.append(thankModal);
 
-        request.addEventListener('load',()=>{
-            if(request.status === 200){
-                console.log(request.response);
-                statusMessage.textContent = message.success;
-                //очистка полей формы
-                form.reset();
-                //убираем сообщение о статусе
-                setTimeout(()=>{
-                    statusMessage.remove();
-                },2000);
-            }
-            else{
-                statusMessage.textContent = message.failure;
-            }
+        setTimeout(()=>{
+            thankModal.remove();
+            prevModalDialog.classList.add('show');
+            prevModalDialog.classList.remove('hide');
+            ShowHideModalWindow(modalWindow);
+        },4000);
 
-        });
-    });
-}
+    }
 
 
 });
