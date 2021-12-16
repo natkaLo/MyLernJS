@@ -241,4 +241,95 @@ class MenuCard{
         '.menu .menu__field .container',
         'menu__item'
     ).render();
+    //////////////////////////////////////////////////////////////////////////////
+//отправка форм на сервер
+//////////////////////////////////////////////////////////////////////////////
+const forms = document.querySelectorAll('form');
+
+const message = {
+    loading: 'Загрузка',
+    success: 'Спасибо! Скоро мы с Вами свяжемся',
+    failure: 'Что-то пошло не так...'
+};
+forms.forEach(item =>{
+    postData(item);
+});
+//отправка данных на сервер без перезагрузки страницы
+function postData(form){
+    form.addEventListener('submit',(e)=>{
+        e.preventDefault();
+
+        //создание нового блока на странице, куда будет выводиться сообщение о состоянии оправки формы
+        const statusMessage = document.createElement('div');
+        statusMessage.classList.add('status');
+        statusMessage.textContent = message.loading;
+        form.append(statusMessage);
+
+        const request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        //
+        //form data - получение данных из формы с помощью объекта FormData
+        //и отправка на сервер в виде FormData
+        //
+
+        //здесь важно, чтобы в html файле у всех контролов формы (например у input) был аттрибут name
+        //этот заголовок устанавливать  не нужно!!! Получим пустой объект от сервера
+        // //request.setRequestHeader('Content-type','multipart/form-data');
+        // const formData = new FormData(form);
+
+        // request.send(formData);
+
+        // request.addEventListener('load',()=>{
+        //     if(request.status === 200){
+        //         console.log(request.response);
+        //         statusMessage.textContent = message.success;
+        //         //очистка полей формы
+        //         form.reset();
+        //         //убираем сообщение о статусе
+        //         setTimeout(()=>{
+        //             statusMessage.remove();
+        //         },2000);
+        //     }
+        //     else{
+        //         statusMessage.textContent = message.failure;
+        //     }
+
+        // });
+        //
+        //Отправка на сервер в формате JSON
+        //
+        //тут уже нужен заголовок
+        request.setRequestHeader('Content-type','application/json');
+        const formData = new FormData(form);
+
+        //нужно превратить FormData в обычный объект для JSON
+        const object = {};
+        formData.forEach(function(value,key){
+            object[key] = value;
+        });
+
+        const json = JSON.stringify(object)
+
+        request.send(json);
+
+        request.addEventListener('load',()=>{
+            if(request.status === 200){
+                console.log(request.response);
+                statusMessage.textContent = message.success;
+                //очистка полей формы
+                form.reset();
+                //убираем сообщение о статусе
+                setTimeout(()=>{
+                    statusMessage.remove();
+                },2000);
+            }
+            else{
+                statusMessage.textContent = message.failure;
+            }
+
+        });
+    });
+}
+
+
 });
