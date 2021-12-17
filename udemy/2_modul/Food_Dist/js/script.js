@@ -256,8 +256,10 @@ forms.forEach(item =>{
     postData(item);
 });
 //отправка данных на сервер без перезагрузки страницы
-    function postData(form){
-        form.addEventListener('submit',(e)=>{
+    function postData(form)
+    {
+        form.addEventListener('submit',(e)=>
+        {
             e.preventDefault();
 
             //простое некрасивое оповещение пользователя
@@ -276,9 +278,10 @@ forms.forEach(item =>{
             `;
            // form.append(statusMessageImg);// иногда ломает верстку
            form.insertAdjacentElement('afterend',statusMessageImg);
-
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
+            ////////////////////////////////////
+            //XMLHttpRequest устаревший вариате
+            // const request = new XMLHttpRequest();
+            // request.open('POST', 'server.php');
             //
             //form data - получение данных из формы с помощью объекта FormData
             //и отправка на сервер в виде FormData
@@ -308,46 +311,72 @@ forms.forEach(item =>{
 
             // });
             //
+            ///////////////////////////////////////////////////////
             //Отправка на сервер в формате JSON
             //
             //тут уже нужен заголовок
-            request.setRequestHeader('Content-type','application/json');
+          //  request.setRequestHeader('Content-type','application/json');
             const formData = new FormData(form);
 
             //нужно превратить FormData в обычный объект для JSON
-            const object = {};
-            formData.forEach(function(value,key){
-                object[key] = value;
-            });
+             const object = {};
+             formData.forEach(function(value,key){
+                 object[key] = value;
+             });
 
-            const json = JSON.stringify(object);
+            // const json = JSON.stringify(object);
 
-            request.send(json);
+            // request.send(json);
 
-            request.addEventListener('load',()=>{
-                if(request.status === 200){
-                    console.log(request.response);
-                      //показ формы о загрузке
-                      showThanksModal(message.success);
-                //  statusMessage.textContent = message.success;
-                    //очистка полей формы
-                    form.reset();
-                    //убираем сообщение о статусе
-                    // setTimeout(()=>{
-                    //     statusMessage.remove();
-                    // },2000);
-                    //убираем спиннер
-                    setTimeout(()=>{
-                        statusMessageImg.remove();
-                    },2000);
+            // request.addEventListener('load',()=>{
+            //     if(request.status === 200){
+            //         console.log(request.response);
+            //           //показ формы о загрузке
+            //           showThanksModal(message.success);
+            //     //  statusMessage.textContent = message.success;
+            //         //очистка полей формы
+            //         form.reset();
+            //         //убираем сообщение о статусе
+            //         // setTimeout(()=>{
+            //         //     statusMessage.remove();
+            //         // },2000);
+            //         //убираем спиннер
+            //         setTimeout(()=>{
+            //             statusMessageImg.remove();
+            //         },2000);
                   
-                }
-                else{
-                    //statusMessage.textContent = message.failure;
-                    //показ формы о загрузке
-                    showThanksModal(message.failure);
-                }
+            //     }
+            //     else{
+            //         //statusMessage.textContent = message.failure;
+            //         //показ формы о загрузке
+            //         showThanksModal(message.failure);
+            //     }
 
+            // });
+            ///////////////////////////////////////////////
+            //использует fetch для отправки на сервер
+            //promise придет в then когда выполниться запрос
+
+            fetch('server.php',{
+                 method: "POST",
+                 headers:{
+                 'Content-type':'application/json'
+                 },
+                // body: formData           //если передаем form data и headers нужно закоментировать
+                body:JSON.stringify(object) //если передаем JSON объект и headers нужно расскоментировать и в .php расскомент
+            }).then(data=>data.text()) //ответ от сервера
+            .then(data=>{
+                console.log(data);
+                //показ формы о загрузке
+                showThanksModal(message.success);
+                //убираем сообщение о статусе
+                statusMessageImg.remove();
+            }).catch(()=>{
+                showThanksModal(message.failure);
+            }).finally(()=>{
+                 //очистка полей формы
+                form.reset();
+                
             });
         });
     }
@@ -388,10 +417,20 @@ forms.forEach(item =>{
 //////////////////////////////////////////////////////////////////////////////
 //https://jsonplaceholder.typicode.com
 
-//fetch -получить данные с url. fetch использует promise
+//fetch -получить данные с url.(get запрос) fetch использует promise
 //получаем JSON объект
 //response.json() - превращает JSON объект в обычный объкт используя promise. когда выполниться promise, попадаем в then
-fetch('https://jsonplaceholder.typicode.com/todos/1')
-  .then(response => response.json())
-  .then(json => console.log(json));
+// fetch('https://jsonplaceholder.typicode.com/todos/1')
+//   .then(response => response.json())
+//   .then(json => console.log(json));
+// //post запрос. Отправка данных
+// fetch('https://jsonplaceholder.typicode.com/posts',{
+//     method: "POST",
+//     body: JSON.stringify({name:'Alex'}),
+//     headers:{
+//         'Content-type': 'application/json'
+//     }
+// })
+//   .then(response => response.json())
+//   .then(json => console.log(json));
 });
