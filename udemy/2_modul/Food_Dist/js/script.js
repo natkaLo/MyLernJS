@@ -433,4 +433,22 @@ forms.forEach(item =>{
 // })
 //   .then(response => response.json())
 //   .then(json => console.log(json));
+
+//////////////////////////////////////////////////////////////////////////////
+//JSON сервер
+//////////////////////////////////////////////////////////////////////////////
+
+// fetch('db.json')
+// .then(data=>data.json())
+// .then(res => console.log(res));
+
+//https://coderoad.ru/55547572/json-сервер-не-распознается-как-внутренняя-или-внешняя-команда
+//Во-первых, вам нужно проверить, установлен ли json-server глобально или нет. или вы можете установить его глобально с помощью
+//npm install -g json-server
+//Если вы устанавливаете его локально в своем проекте, используйте npx для его запуска
+//npx json-server --watch db.json
+fetch('http://localhost:3000/menu')
+ .then(data=>data.json())
+ .then(res => console.log(res));
+
 });
