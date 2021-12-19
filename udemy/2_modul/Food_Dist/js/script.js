@@ -520,18 +520,21 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         return await res.json(); //это promice, поэтому тоже нужен await, а потом выполниться return
     };
-    getResource('http://localhost:3000/menu')
-        .then(data => {
-            data.forEach(({
-                img,
-                altimg,
-                title,
-                descr,
-                price
-            }) => {
-                new MenuCard(img, altimg, title, descr, price, '.menu .menu__field .container').render();
-            });
-        });
+  // getResource('http://localhost:3000/menu')
+    // .then(data =>{
+    //     data.forEach(({img,altimg,title,descr,price}) =>{
+    //         new MenuCard(img,altimg,title,descr,price,'.menu .menu__field .container').render();
+    //     });
+    // });
+
+    //ecли используем библиотеку axios
+
+    axios.get('http://localhost:3000/menu')
+    .then(data =>{
+             data.data.forEach(({img,altimg,title,descr,price}) =>{
+                 new MenuCard(img,altimg,title,descr,price,'.menu .menu__field .container').render();
+             });
+     });
     //не использует классы, а создает классы налету
     // getResource('http://localhost:3000/menu')
     // .then(data =>createCard(data)); 
@@ -555,4 +558,54 @@ window.addEventListener('DOMContentLoaded', () => {
     //         document.querySelector('.menu .menu__field .container').append(element);
     //     });
     // }
+    
+    //////////////////////////////////////////////////////////////////////////////
+    //cлайдер
+    //////////////////////////////////////////////////////////////////////////////
+
+    const offerSlider = document.querySelector('.offer__slider');
+    const currentElement = offerSlider.querySelector('.offer__slider-counter #current');
+    const offerSlides = offerSlider.querySelector('.offer__slider-wrapper').querySelectorAll('.offer__slide');
+    const totalSlides = offerSlides.length;
+    offerSlider.querySelector('.offer__slider-counter #total').textContent = (totalSlides < 10)? `0${totalSlides}`:totalSlides;
+    currentElement.textContent = '01';
+
+   
+    function getCurrent(element){
+        return +element.textContent;
+    }
+    const setCurrent = (current,element,total = totalSlides)=>{
+        //console.log(getCurrent(element));
+        //console.log(current);
+        if(current <= 0){ current = total;}
+        else if(current> total){current = 1;} 
+        element.textContent = (current < 10)? `0${current}`:current;
+        
+        offerSlides.forEach((slide,index)=>{
+            if(!slide.classList.contains('hide')){
+                slide.classList.add('hide');
+            }
+            if(slide.classList.contains('show')){
+                slide.classList.remove('show');
+            }
+            if(index == current -1){
+                slide.classList.remove('hide');
+                slide.classList.add('show');
+            }
+        });
+    };
+    offerSlider.querySelector('.offer__slider-counter').addEventListener('click', (e)=>{
+        e.preventDefault();
+        if(e.target){
+            let current = getCurrent(currentElement);
+            if(e.target.matches('.offer__slider-prev')){
+                setCurrent(--current, currentElement);
+            }
+            else if(e.target.matches('.offer__slider-next')){
+                setCurrent(++current, currentElement);
+            }
+        }
+    });
+    //init
+    setCurrent(getCurrent(currentElement), currentElement);
 });
