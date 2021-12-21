@@ -559,7 +559,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //     });
     // }
     
-    //////////////////////////////////////////////////////////////////////////////
+   //////////////////////////////////////////////////////////////////////////////
     //cлайдер
     //////////////////////////////////////////////////////////////////////////////
 
@@ -619,20 +619,17 @@ window.addEventListener('DOMContentLoaded', () => {
             current = document.querySelector('#current'),                   //поле current
             slides = document.querySelectorAll('.offer__slide'),            //каждый отдельный слайд
             slidesField = document.querySelector(".offer__slider-inner"),   // общая обертка для всех слайдов внутри slidesWraper
-            width = window.getComputedStyle(slidesWraper).width;            //видимая ширина ленты слайдов вычисленная автоматически при загрузке
+            width = window.getComputedStyle(slidesWraper).width,            //видимая ширина ленты слайдов вычисленная автоматически при загрузке
+            widthInt = +width.slice(0, width.length -2);                    //видимая ширина ленты число (width - это строка ..px)
+    const slider = document.querySelector('.offer__slider'),
+          dots = [];
     
     let slideIndex = 1; // текущий слайд
     let offset = 0; //отступ от начала ленты
 
     total.textContent = (slides.length < 10)?`0${slides.length}`:slides.length;
 
-    const setCurrent = ()=> {
-        current.textContent = (slides.length < 10)?`0${slideIndex}`:slideIndex;
-    };
-
-    setCurrent();
-
-   slidesField.style.width = 100*slides.length + '%'; // сделаем ширину иннера в процентах 
+    slidesField.style.width = 100*slides.length + '%'; // сделаем ширину иннера в процентах 
     //выстраиваем слоайды в одну линию
     slidesField.style.display = 'flex';
     slidesField.style.transition = '0.5s all';
@@ -646,33 +643,103 @@ window.addEventListener('DOMContentLoaded', () => {
 
     next.addEventListener('click', ()=>{
         //сдвигаем слайд
-        //width - это строка 23px
-        const widthInt = +width.slice(0, width.length -2);
         if(offset == widthInt * (slides.length -1)){        //если это поледний слайд
             offset = 0;
         }
         else{
             offset += widthInt;
         }
-        slidesField.style.transform =`translateX(-${offset}px)`;
-
         slideIndex =(slideIndex == slides.length)? 1:++slideIndex;
         setCurrent();
      });
 
     prev.addEventListener('click', ()=>{
         //сдвигаем слайд
-        //width - это строка 2px
-        const widthInt = +width.slice(0, width.length -2);
         if(offset == 0){        //если это первый слайд
             offset = widthInt * (slides.length -1);
         }
         else{
             offset -= widthInt;
         }
-        slidesField.style.transform =`translateX(-${offset}px)`;
-
         slideIndex =(slideIndex == 1)? slides.length:--slideIndex;
         setCurrent();
     });
+
+      ///////////////////////////////////////////////////////////////////////////////////////////
+    //точки для слайдера
+    ///////////////////////////////////////////////////////////////////////////////////////////
+  
+    slider.style.position = 'relative';
+    //создаем оберетку для точек и выставляем стили
+    const indicatorDots = document.createElement('ol');
+    indicatorDots.classList.add('carousel-indicators');
+    //mожно добавить ему свойства в css файл, а можно javascriptом
+    indicatorDots.style.cssText =`
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 15;
+        display: flex;
+        justify-content: center;
+        margin-right: 15%;
+        margin-left: 15%;
+        list-style: none;
+    `;
+    slider.append(indicatorDots);
+    //создаем точки
+
+    const clickDot = (e)=>{
+        if(e && e.target){
+            const dot = e.target;
+            slideIndex = +(e.target.getAttribute('data-slide-to'));
+            offset = widthInt * (slideIndex -1);
+            setCurrent();
+        }
+    };
+
+
+    for(let i = 0; i< slides.length;i++){
+        const dot = document.createElement('li');
+        dot.classList.add('dot');
+        dot.setAttribute('data-slide-to',i+1);// к какому слайду точка относиться
+        dot.style.cssText = `
+            box-sizing: content-box;
+            flex: 0 1 auto;
+            width: 30px;
+            height: 6px;
+            margin-right: 3px;
+            margin-left: 3px;
+            cursor: pointer;
+            background-color: #fff;
+            background-clip: padding-box;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            opacity: .5;
+            transition: opacity .6s ease;
+        `;
+        indicatorDots.append(dot);
+        dot.addEventListener('click', clickDot);
+        dots.push(dot);
+    }
+   
+    const setCurrent = ()=> {
+        //картинки
+        slidesField.style.transform =`translateX(-${offset}px)`;
+        //нумерация - текстовое поле
+        current.textContent = (slides.length < 10)?`0${slideIndex}`:slideIndex; 
+
+        //точки
+        dots.forEach((dot,index)=>{
+            if(index == slideIndex-1){//активаня точка
+                dot.style.opacity = 1;
+            }
+            else{
+                dot.style.opacity = '.5';
+            }
+        });
+       
+    };
+
+    setCurrent();
 });
