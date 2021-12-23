@@ -612,6 +612,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //////////////////////////////////////////////////////////////////////////////
     //2 variant лента слайдов
+
+    function deleteNotDigits(str){
+        return +str.replace(/\D/g,'');
+    }
     const  slidesWraper = document.querySelector(".offer__slider-wrapper"), // общая обертка для всех слайдов
             prev = document.querySelector('.offer__slider-prev'),           //кнопка prev
             next = document.querySelector(".offer__slider-next"),           //кнопка next
@@ -620,9 +624,10 @@ window.addEventListener('DOMContentLoaded', () => {
             slides = document.querySelectorAll('.offer__slide'),            //каждый отдельный слайд
             slidesField = document.querySelector(".offer__slider-inner"),   // общая обертка для всех слайдов внутри slidesWraper
             width = window.getComputedStyle(slidesWraper).width,            //видимая ширина ленты слайдов вычисленная автоматически при загрузке
-            widthInt = +width.slice(0, width.length -2);                    //видимая ширина ленты число (width - это строка ..px)
-    const slider = document.querySelector('.offer__slider'),
-          dots = [];
+           // widthInt = +width.slice(0, width.length -2);                   //видимая ширина ленты число (width - это строка ..px)
+           widthInt = deleteNotDigits(width);                               // все не числа заменяем пустыми символами (удаляем)
+    const  slider = document.querySelector('.offer__slider'),
+           dots = [];
     
     let slideIndex = 1; // текущий слайд
     let offset = 0; //отступ от начала ленты
@@ -743,3 +748,4 @@ window.addEventListener('DOMContentLoaded', () => {
 
     setCurrent();
 });
+  //npx json-server --watch db.json
