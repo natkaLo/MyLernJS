@@ -747,7 +747,7 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     setCurrent();
-});
+
   //npx json-server --watch db.json
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // калькулятор калорий
@@ -816,4 +816,5 @@ window.addEventListener('DOMContentLoaded', () => {
     getDynamicInformation('#height');
     getDynamicInformation('#weight');
     getDynamicInformation('#age');
+    
 });
