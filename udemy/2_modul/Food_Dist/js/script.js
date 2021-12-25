@@ -748,13 +748,43 @@ window.addEventListener('DOMContentLoaded', () => {
 
     setCurrent();
 
-  //npx json-server --watch db.json
+  
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // калькулятор калорий
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    function setLocalStorageData(key, value){
+        localStorage.setItem(key,value);
+    }
     const result = document.querySelector(".calculating__result span");
     let sex = 'female',height,weight,age,ratio = '1.375';
+   
+
+    function initLocalSettings(selector,activeClass)
+    {
+        if(localStorage.getItem('sex')){
+            sex = localStorage.getItem('sex');
+        }
+        setLocalStorageData('sex',sex);
+        if(localStorage.getItem('ratio')){
+            ratio = localStorage.getItem('ratio');
+        }
+        setLocalStorageData('ratio',ratio);
+
+        const elemenents = document.querySelectorAll(selector);
+        console.log(elemenents);
+        elemenents.forEach(elem =>{
+            elem.classList.remove(activeClass);
+            if(elem.getAttribute('id') === localStorage.getItem('sex')){
+                elem.classList.add(activeClass);
+            }
+            if(elem.getAttribute('data-ratio') === localStorage.getItem('ratio')){
+                elem.classList.add(activeClass);
+            }
+        });
+    }
+    initLocalSettings('#gender div', 'calculating__choose-item_active');
+    initLocalSettings('.calculating__choose_big div', 'calculating__choose-item_active');
+
 
     function calcTotal(){
         //проверка, что все данные заполнены
@@ -772,33 +802,42 @@ window.addEventListener('DOMContentLoaded', () => {
 
     calcTotal();
 
-    function getStaticInformation(parentSelector, activeClass){
-        const elemenents = document.querySelectorAll(`${parentSelector} div`);// получаем все дивы внутри родительского элемента
+    function getStaticInformation(selector, activeClass){
+        const elemenents = document.querySelectorAll(selector);// получаем все дивы внутри родительского элемента
 
         elemenents.forEach(elem=>{
             elem.addEventListener('click', (e)=>{
                 if(e && e.target.getAttribute('data-ratio')){       //если кликаем на активность
                     ratio = +e.target.getAttribute('data-ratio');
+                    setLocalStorageData('ratio',ratio);
                 }
                 else{                                               //если кликаем на пол
                     sex = e.target.getAttribute('id');
+                    setLocalStorageData('sex',sex);
                 }
-               elemenents.forEach(elem =>{
-                        elem.classList.remove(activeClass);
-                });
+                elemenents.forEach(elem =>{
+                    elem.classList.remove(activeClass);
+                 });
                 e.target.classList.add(activeClass);
-    
-                calcTotal();
             });
+          calcTotal();
         });
     }
-    getStaticInformation('#gender', 'calculating__choose-item_active');
-    getStaticInformation('.calculating__choose_big', 'calculating__choose-item_active');
+    getStaticInformation('#gender div', 'calculating__choose-item_active');
+    getStaticInformation('.calculating__choose_big div', 'calculating__choose-item_active');
 
     function getDynamicInformation(selector){
         const input = document.querySelector(selector);
 
         input.addEventListener('input',()=>{
+
+            if(input.value.match(/\D/g)) //пользователь вводит не число
+            {
+                input.style.border = "1px solid red ";
+            }
+            else{
+                input.style.border = "none";
+            }
             switch(input.getAttribute('id')){
                 case 'height': 
                     height = +input.value;
@@ -818,3 +857,4 @@ window.addEventListener('DOMContentLoaded', () => {
     getDynamicInformation('#age');
     
 });
+//npx json-server --watch db.json
