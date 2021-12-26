@@ -1,10 +1,10 @@
-function tabs(){
+function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass){
     //////////////////////////////////////////////////////////////////////////////
     //tabs
     //////////////////////////////////////////////////////////////////////////////
-    const tabs = document.querySelectorAll('.tabheader__item'),
-        tabsContent = document.querySelectorAll('.tabcontent'),
-        tabsParent = document.querySelector('.tabheader__items');
+    const tabs = document.querySelectorAll(tabsSelector),
+        tabsContent = document.querySelectorAll(tabsContentSelector),
+        tabsParent = document.querySelector(tabsParentSelector);
 
     //скрывание ненужных табов (картинок)
     function hideTabContent() {
@@ -14,7 +14,7 @@ function tabs(){
         });
         //убираем класс активности tabheader__item_active
         tabs.forEach(item => {
-            item.classList.remove('tabheader__item_active');
+            item.classList.remove(activeClass);
         });
     }
     //в шестом стандарте можно использовать параметры по умолчанию (i = 0)
@@ -22,11 +22,11 @@ function tabs(){
         tabsContent[i].classList.add('show', 'fade');
         tabsContent[i].classList.remove('hide');
         //ставим класс активности tabheader__item_active
-        tabs[i].classList.add('tabheader__item_active');
+        tabs[i].classList.add(activeClass);
     }
     tabsParent.addEventListener('click', (event) => {
         const target = event.target;
-        if (target && target.classList.contains('tabheader__item')) {
+        if (target && target.classList.contains(tabsSelector.slice(1))) {
             tabs.forEach((item, i) => {
                 if (target == item) {
                     hideTabContent();
@@ -40,4 +40,6 @@ function tabs(){
     showTabContent();
 }
 
-module.exports = tabs;
+//module.exports = tabs;//можно писать так
+// можно эксортировать по умолчанию
+export default tabs;

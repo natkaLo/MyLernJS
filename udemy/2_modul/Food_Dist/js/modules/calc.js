@@ -21,7 +21,7 @@ function calc(){
         setLocalStorageData('ratio',ratio);
 
         const elemenents = document.querySelectorAll(selector);
-        console.log(elemenents);
+        //console.log(elemenents);
         elemenents.forEach(elem =>{
             elem.classList.remove(activeClass);
             if(elem.getAttribute('id') === localStorage.getItem('sex')){
@@ -106,4 +106,7 @@ function calc(){
     getDynamicInformation('#weight');
     getDynamicInformation('#age');
 }
-module.exports = calc;
+
+//module.exports = calc;    //можно писать так
+// можно эксортировать по умолчанию
+export default calc;
