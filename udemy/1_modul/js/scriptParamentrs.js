@@ -105,3 +105,26 @@ const ojb = {
 };
 const ojbCopy = {...ojb};
 console.log(ojbCopy);
+
+// spret(...) оператор - оператор разворота.Могут быть объекты, массивы
+const arr1 =[1,2,5],
+    arr2 = [43,2,6];
+
+const res = Math.max(1,...arr1,...arr2);//(два массива ращвернуться и в функцию попадут значения, которые у них внутри
+console.log(res);//43
+
+const avatar = 'Photo';
+const user = {
+    name: 'default',
+    pass: 'qwerty',
+    rigths: 'user'
+};
+const admin = {
+    name: 'admin',
+    pass: 'root'
+};
+
+//const res1 = Object.assign({},user, admin);
+
+const res1 = {...user,...admin, avatar};// получаем объект со свойствами двух объектов и новое свойство аватар
+console.log(res1);

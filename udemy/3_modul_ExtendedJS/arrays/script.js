@@ -10,6 +10,12 @@ const shorNames = names.filter(function(name){
 });
 console.log(shorNames);
 
+//синтаксис со стрелочной функцией
+// const shorNames = names.filter((name)=>{
+//     return name.length < 5;
+// });
+// console.log(shorNames);
+
 //2/map позволяет трансформировать элементы массива, возвращает новый массив
 
 // const answers = ['IvAn','AnnA','Hello'];
@@ -61,3 +67,5 @@ const newArr = Object.entries(obj)
 .filter(item => item[1] === 'persone') //отфильтруем persone
 .map(item => item [0]);
 console.log(newArr);
+
+

@@ -112,7 +112,19 @@ btn.addEventListener('click', function(){
 //    e.target.style.backgroundColor = 'red';
 // });
 
-//стрелочная ф-ция берет контекст у своего родителя
+const obj1 = {
+    num:5,
+    sayNumber:function(){
+        function say (){
+            console.log(this);// теряет this будет ссылаться на window?
+        }
+        say();
+    }
+};
+obj1.sayNumber();
+
+
+//стрелочная ф-ция берет контекст у своего родителя. Она не имеет своего контекста вызова
 const obj = {
     num:5,
     sayNumber:function(){
@@ -133,3 +145,23 @@ obj.sayNumber();
 //если стрелочная ф-ция принимает 1 аргумент - пишем его без скобок
 const double = a => a * 2;
 console.log(double(3));
+
+//если поля объекта называются так-же как значение, не надо их писать
+const x = 25, y = 10;
+//cтарая запись
+// const coords = {
+//     x: x,
+//     y: y,
+//     calcSq: function(){
+//         console.log(this.x*this.y);
+//     }
+// };
+
+
+const coords = {x,y,
+    calcSq(){
+        console.log(this.x*this.y);
+    }
+};
+coords.calcSq();
+console.log(coords);

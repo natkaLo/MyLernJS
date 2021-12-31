@@ -25,6 +25,13 @@ options.makeTest();
 const {border, bg} = options.colors;
 console.log(border);
 
+const user = {
+    name:'default',
+    pass: 'qwerty',
+    rigths:'user'
+};
+const userName = user.name;
+
 //console.log(options.name);
 
 // удаление свойства объекта
