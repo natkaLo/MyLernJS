@@ -17,7 +17,7 @@ const obj1 = {
     num:5,
     sayNumber:function(){
         function say (){
-            console.log(this);// теряет this будет ссылаться на window?
+           // console.log(this);// теряет this будет ссылаться на window?
         }
         say();
     }
@@ -76,15 +76,6 @@ const arr1 =[1,2,5],
 const res = Math.max(1,...arr1,...arr2);//(два массива ращвернуться и в функцию попадут значения, которые у них внутри
 console.log(res);//43
 
-//параметры по умолчанию
-function calcOrDouble(number, basis = 2){
-   // basis = basis || 2;// старый способ без использования параметров по умолчанию
-    console.log(number * basis);
-}
-calcOrDouble(3,5);
-calcOrDouble(6);
-
-
 const avatar = 'Photo';
 const user = {
     name: 'default',
@@ -133,7 +124,7 @@ console.log(coords);
  //деструктаризация
 
  const user1 = {
-    name: 'default',
+    name1: 'default',
     pass: 'qwerty',
     rigths: 'user'
 };
@@ -141,8 +132,8 @@ console.log(coords);
 const userName = user1.name;
 const userPass = user1.pass;
 
-const {name,pass,rigths} = user1; //деструкторизация - создались три новые переменные, где будут лежать данные user1
-console.log(name,rigths);
+const {name1,pass,rigths} = user1; //деструкторизация - создались три новые переменные, где будут лежать данные user1
+//console.log(name,rigths);
 
 const user2 = {
     nameUser: {
