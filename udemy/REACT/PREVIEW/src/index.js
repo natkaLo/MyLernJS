@@ -35,7 +35,9 @@
 //https://github.com/facebook/create-react-app
 //npx create-react-app my-app - создание react проэкта
 //cd my-app - перейти в папку
-//npm start - запуск приложения
+//npm start - запуск приложения 
+// - если не запускается с ошибкой ""react-scripts" не распознается как внутренняя или внешняя команда, действующая программа" -
+//npm install react-scripts --save
 
 
 var _script = require("./script");
