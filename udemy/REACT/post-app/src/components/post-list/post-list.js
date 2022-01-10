@@ -5,7 +5,7 @@ import {ListGroup} from "reactstrap";
 import './post-list.css';
 
 
-const PostList = ({posts}) =>{
+const PostList = ({posts, onDelete}) =>{
 
     const elements = posts.map((item) => {
 
@@ -17,6 +17,7 @@ const PostList = ({posts}) =>{
                 //label = {item.label} important={item.important}
                 //{...item}//можно записать так - развернем объект item с помошью spret оператора (а так как значение и ключ совподают - их не пишем)
                  {...itemProps} 
+                 onDelete={()=>onDelete(id)}
                  />
             </li>
         )
