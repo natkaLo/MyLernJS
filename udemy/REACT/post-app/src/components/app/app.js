@@ -30,14 +30,15 @@ export default class App extends Component{
         super(props);
         this.state = {
              data : [
-                {label: 'Going to Learn React', important: true, id:1},
-                {label: 'This is so good', important: false, id:2},
-                {label: 'I need a break...', important: false, id:3} 
+                {label: 'Going to Learn React', important: true, like: false, id:1},
+                {label: 'This is so good', important: false, like: false, id:2},
+                {label: 'I need a break...', important: false, like: false, id:3} 
             ]
         };
         this.deleteItem = this.deleteItem.bind(this);
         this.addItem = this.addItem.bind(this);
-
+        this.onToogleImportant = this.onToogleImportant.bind(this);
+        this.onToogleLiked = this.onToogleLiked.bind(this);
         this.maxId = 4;
     }
     deleteItem(id){
@@ -82,19 +83,59 @@ export default class App extends Component{
             }
         })
     }
+    onToogleImportant(id) {
+        //console.log(`important ${id}`);
+        this.setState(({data}) =>{
+            const index = data.findIndex(elem => elem.id === id);
+
+            const old = data[index];
+            const newItem = {...old,important: !old.important};// cпрет оператор развернет объект и перезапишет свойство
+            // новый массив
+            const newArr =[...data.slice(0,index), newItem,...data.slice(index+1)];
+            return {
+                data : newArr
+            }
+        })
+    }
+    onToogleLiked(id){
+        //console.log(`liked ${id}`);
+        this.setState(({data}) =>{
+            const index = data.findIndex(elem => elem.id === id);
+
+            const old = data[index];
+            const newItem = {...old,like: !old.like};// cпрет оператор развернет объект и перезапишет свойство
+            // новый массив
+            const newArr =[...data.slice(0,index), newItem,...data.slice(index+1)];
+            return {
+                data : newArr
+            }
+        })
+    }
+    //render вызывается после setState
     render (){
+    const {data} = this.state;// деструкторизация стейта
+    // кол-во лайкнутых постов
+    const liked = data.filter(item => item.like).length; //filter - возвращает новый массив
+    //кол-во всех постов
+    const allPosts = data.length;
+
     return(
             // <div className = {style.app}>
             // <div className = "app">
             //<StyledAppBlock>
             <AppBlock>
-                <AppHeader/>
+                <AppHeader
+                    liked = {liked}
+                    allPosts = {allPosts}
+                />
                 <div className = "search-panel d-flex">
                     <SearchPanel/>
                     <PostStatusFilter/>
                 </div> 
                 <PostList posts = {this.state.data}
-                onDelete = {this.deleteItem} />
+                onDelete = {this.deleteItem}
+                onToogleImportant = {this.onToogleImportant} 
+                onToogleLiked = {this.onToogleLiked}/>
                 <PostAddForm
                 onAdd = {this.addItem}/>
             </AppBlock>
