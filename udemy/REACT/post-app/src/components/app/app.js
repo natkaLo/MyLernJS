@@ -33,12 +33,16 @@ export default class App extends Component{
                 {label: 'Going to Learn React', important: true, like: false, id:1},
                 {label: 'This is so good', important: false, like: false, id:2},
                 {label: 'I need a break...', important: false, like: false, id:3} 
-            ]
+            ],
+            term : ``,             //строка поиска
+            filter : `all`
         };
         this.deleteItem = this.deleteItem.bind(this);
         this.addItem = this.addItem.bind(this);
         this.onToogleImportant = this.onToogleImportant.bind(this);
         this.onToogleLiked = this.onToogleLiked.bind(this);
+        this.onUpdateSearch = this.onUpdateSearch.bind(this);
+        this.onFilterSelect = this.onFilterSelect.bind(this);
         this.maxId = 4;
     }
     deleteItem(id){
@@ -111,13 +115,47 @@ export default class App extends Component{
             }
         })
     }
+
+    //поиск по постам
+    //ф-ция вернет массив с постами, название которых будет содержать искомую строку
+    searchPost(items, term){
+        if(term.length === 0){
+            return items;
+        }
+        //функция будет возвращать элемнеты, название которых будет содержать искомую строку
+        return items.filter((item)=>{
+            return item.label.indexOf(term) > -1;
+        })
+    }
+
+    filterPost(items,filter){
+        if(filter === 'like'){
+            return items.filter(item => item.like)
+        }
+        else{ //all
+            return items
+        }
+    }
+
+    onUpdateSearch(term){
+        this.setState({term}) //term:term
+    }
+
+    onFilterSelect(filter){
+        this.setState({filter})//filter:filter
+    }
+
     //render вызывается после setState
     render (){
-    const {data} = this.state;// деструкторизация стейта
+    const {data, term,filter} = this.state;// деструкторизация стейта
     // кол-во лайкнутых постов
     const liked = data.filter(item => item.like).length; //filter - возвращает новый массив
     //кол-во всех постов
     const allPosts = data.length;
+
+    // - searchPost если в поле поиска ничего не введено - будут видимы все посты if(term.length === 0), если введено - только найденные посты
+   // <PostList posts = {this.state.data} заменяем на  <PostList posts = {visiblePosts}
+    const visiblePosts =this.filterPost(this.searchPost(data, term), filter);
 
     return(
             // <div className = {style.app}>
@@ -129,10 +167,13 @@ export default class App extends Component{
                     allPosts = {allPosts}
                 />
                 <div className = "search-panel d-flex">
-                    <SearchPanel/>
-                    <PostStatusFilter/>
+                    <SearchPanel
+                    onUpdateSearch = {this.onUpdateSearch}/>
+                    <PostStatusFilter 
+                    filter = {filter}
+                    onFilterSelect = {this.onFilterSelect}/>
                 </div> 
-                <PostList posts = {this.state.data}
+                <PostList posts = {visiblePosts}
                 onDelete = {this.deleteItem}
                 onToogleImportant = {this.onToogleImportant} 
                 onToogleLiked = {this.onToogleLiked}/>
