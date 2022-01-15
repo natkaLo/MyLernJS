@@ -246,6 +246,8 @@ connect({
 //npm i create-react-app
 //npm i create-react-app -g - глобально
 //https://github.com/facebook/create-react-app
+
+//! нужно зайти в терминале в папку - где хотим создать проэкт. В этой папке создасться папка с проэктом
 //npx create-react-app my-app - создание react проэкта
 //cd my-app - перейти в папку
 //npm start - запуск приложения 
