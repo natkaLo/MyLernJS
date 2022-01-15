@@ -5,6 +5,15 @@ import RandomChar from '../randomChar';
 import ItemList from '../itemList';
 import CharDetails from '../charDetails';
 
+import GotService from '../../services/gotService';
+
+//const got = new GotService();
+// got.getAllCharacters()
+// //.then(res => console.log(res));
+// .then(res => {(res.forEach(item => console.log(item.name)));
+// });
+ //got.getBook(1)
+// .then(res => console.log(res));
 
 const App = () => {
     return (
