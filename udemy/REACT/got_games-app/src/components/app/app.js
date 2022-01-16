@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import {Col, Row, Container} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import ItemList from '../itemList';
-import CharDetails from '../charDetails';
 import ButtonToggleRandom from '../Button';
+import ErrorMessage from '../errorMessage';
+import CharacterPage from '../characterPage';
 
-import GotService from '../../services/gotService';
+//import GotService from '../../services/gotService';
 
 //const got = new GotService();
 // got.getAllCharacters()
@@ -19,6 +19,7 @@ import GotService from '../../services/gotService';
  //componentDidMount() компонент появился и отрисовался на странице - здесь работаем с дом деревом и с сервером
 // componentWillUnmount()компоненент удаляется со страницы. Вызывается до того, как dom структура будет удалена со страницы
 //componentDidUpdate(prevProps) компоненент обновляется. Вызывается когда компонент должен быть обновлен - в 2 случаях - когда компонент получает новые пропорти и когда изменяется state
+//componentDidCatch() - ловит ошибки в приложении
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export default class  App extends Component {
     constructor(props){
@@ -26,22 +27,29 @@ export default class  App extends Component {
 
         this.state = {
             visibleRandomCharacter:true,
-            selectedChar:null
+            error: false
         }
 
         this.onToggleRandomCharcter = this.onToggleRandomCharcter.bind(this);
     }
+    componentDidCatch(){
+        console.log('error');
+        this.setState({error: true})
+    }
+
     onToggleRandomCharcter(){
        this.setState({visibleRandomCharacter: !this.state.visibleRandomCharacter })
     } 
 
-    onCharSelected = (id) =>{
-        this.setState({selectedChar:id})
-    }
+
 
     render(){
         const {visibleRandomCharacter} = this.state;
         const randomCharacter = visibleRandomCharacter?<RandomChar/>:null;
+        if(this.state.error){
+            return <ErrorMessage/>
+        }
+
          return (
             <> 
                 <Container>
@@ -56,14 +64,7 @@ export default class  App extends Component {
                     <Row>
                         <Col> <ButtonToggleRandom onToggleRandomCharcter = {this.onToggleRandomCharcter}/></Col>
                     </Row>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList onCharSelected = {this.onCharSelected}/>
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails charId = {this.state.selectedChar}/>
-                        </Col>
-                    </Row>
+                   <CharacterPage/>
                 </Container>
              </>
         )
