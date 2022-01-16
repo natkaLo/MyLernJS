@@ -3,6 +3,7 @@ import './randomChar.css';
 import GotService from '../../services/gotService';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
+//import { Button } from 'reactstrap';
 
 export default class RandomChar extends Component {
 
@@ -55,6 +56,7 @@ export default class RandomChar extends Component {
                 {spinner}
                 {content}
             </div>
+          
         );
     }
 }

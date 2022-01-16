@@ -45,31 +45,31 @@ export default class GotService{
 
     _transformCharacter(char){
         return {
-            name: char.name,
-            gender: char.gender,
-            born: char.born,
-            died: char.died,
-            culture: char.culture
+            name: (char.name && char.name.length)? char.name: 'no data :(',
+            gender: (char.gender && char.gender.length)? char.gender: 'no data :(',
+            born: (char.born && char.born.length)? char.born: 'no data :(',
+            died: (char.died && char.died.length)? char.died: 'no data :(',
+            culture: (char.culture && char.culture.length)? char.culture: 'no data :('
         }
     }
 
     _transformHouse (house){
         return {
-            name: house.name,
-            region: house.region,
-            words: house.words,
-            titles: house.titles,
-            overlord: house.overlord,
-            ancestralWeapons: house.ancestralWeapons
+            name: (house.name && house.name.length)? house.name: 'no data :(',
+            region:(house.region && house.region.length)? house.region: 'no data :(',
+            words:(house.words && house.words.length)? house.words: 'no data :(',
+            titles: (house.titles && house.titles.length)? house.titles: 'no data :(',
+            overlord: (house.overlord && house.overlord.length)? house.overlord: 'no data :(',
+            ancestralWeapons:(house.ancestralWeapons && house.ancestralWeapons.length)? house.ancestralWeapons: 'no data :('
         }
     }
 
     _trasformBook(book){
         return{
-            name: book.name,
-            numberOfPages: book.numberOfPages,
-            publiser: book.publiser,
-            released: book.released
+            name: (book.name && book.name.length)? book.name: 'no data :(',
+            numberOfPages: (book.numberOfPages && book.numberOfPages.length)? book.numberOfPages: 'no data :(',
+            publiser: (book.publiser && book.publiser.length)? book.publiser: 'no data :(',
+            released: (book.released && book.released.length)? book.released: 'no data :('
         }
     }
 }
