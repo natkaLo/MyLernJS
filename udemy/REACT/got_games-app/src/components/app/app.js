@@ -15,15 +15,18 @@ import GotService from '../../services/gotService';
 // });
  //got.getBook(1)
 // .then(res => console.log(res));
-
-
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //componentDidMount() компонент появился и отрисовался на странице - здесь работаем с дом деревом и с сервером
+// componentWillUnmount()компоненент удаляется со страницы. Вызывается до того, как dom структура будет удалена со страницы
+//componentDidUpdate(prevProps) компоненент обновляется. Вызывается когда компонент должен быть обновлен - в 2 случаях - когда компонент получает новые пропорти и когда изменяется state
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export default class  App extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            visibleRandomCharacter:true
+            visibleRandomCharacter:true,
+            selectedChar:null
         }
 
         this.onToggleRandomCharcter = this.onToggleRandomCharcter.bind(this);
@@ -31,6 +34,10 @@ export default class  App extends Component {
     onToggleRandomCharcter(){
        this.setState({visibleRandomCharacter: !this.state.visibleRandomCharacter })
     } 
+
+    onCharSelected = (id) =>{
+        this.setState({selectedChar:id})
+    }
 
     render(){
         const {visibleRandomCharacter} = this.state;
@@ -51,10 +58,10 @@ export default class  App extends Component {
                     </Row>
                     <Row>
                         <Col md='6'>
-                            <ItemList />
+                            <ItemList onCharSelected = {this.onCharSelected}/>
                         </Col>
                         <Col md='6'>
-                            <CharDetails />
+                            <CharDetails charId = {this.state.selectedChar}/>
                         </Col>
                     </Row>
                 </Container>

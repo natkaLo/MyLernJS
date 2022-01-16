@@ -7,10 +7,10 @@ import ErrorMessage from '../errorMessage';
 
 export default class RandomChar extends Component {
 
-    constructor(props){
-        super(props);
-        this.updateChar();
-    }
+    // constructor(props){
+    //     super(props);
+    //    //console.log('constructor');
+    // }
 
     gotServise = new GotService();
     state = {
@@ -22,6 +22,18 @@ export default class RandomChar extends Component {
         // died: null,
         // culture: null
     }
+    //компонент появился и отрисовался на странице - здесь работаем с дом деревом и с сервером
+    componentDidMount(){
+        //console.log('mounting');
+        this.updateChar();
+        this.timerId = setInterval(this.updateChar,1500);
+    }
+    //компоненент удаляется со страницы. Вызывается до того, как dom структура будет удалена со страницы
+    componentWillUnmount(){
+        //console.log('unmounting');
+         clearInterval(this.timerId);
+    }
+
     onCharLoaded = (char) =>{
         this.setState({
             char,
@@ -36,7 +48,8 @@ export default class RandomChar extends Component {
         })
     }
 
-    updateChar(){
+    updateChar = () =>{
+       // console.log('update');
         const id = Math.floor(Math.random()*140 + 25);//от 25 персонажа до 140
         // если хотим постотреть ошибку - ставим в id какое-то большое число
         this.gotServise.getCharacter(id)    // возвращается promise Поэтому then. Получаем персонажа (char) и меняем state. Т.к новый state не зависит от старого - просто меняем
@@ -45,6 +58,7 @@ export default class RandomChar extends Component {
     }
 
     render() {
+       // console.log('render');
         // const {name, gender, born, died, culture} = this.state;
         const {char,loading, error} = this.state;
         const errorMessage = error?<ErrorMessage/>:null;
