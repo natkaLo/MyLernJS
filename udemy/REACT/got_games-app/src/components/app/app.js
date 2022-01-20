@@ -67,8 +67,13 @@ export default class  App extends Component {
                     <Row>
                         <Col md = '6'>
                             <ItemList 
-                             onCharSelected = {this.onCharSelected}
-                             getData = {this.gotService.getAllBooks} />
+                             onItemSelected = {this.onItemSelected}
+                             getData = {this.gotService.getAllBooks} // это не вызов ф-йи (нет круглых скобок), а передаем ее в качестве пропсов в ItemList. Он ее и вызывае
+                              //паттерн - рендер функция - позволяет коттролировать - что именно отображать в наших компонентах
+                             renderItem = {(item) => item.name}
+                            //можно использовать и разметку
+                           // renderItem = {(item) => (<><span>{item.name}</span><button> Click Me</button></>)}
+                             />
                         </Col>
                         <Col md = '6'>
                             <CharDetails charId = {this.state.selectedChar} />
@@ -76,8 +81,10 @@ export default class  App extends Component {
                     </Row>
                     <Row>
                         <Col md = '6'>
-                            <ItemList onCharSelected = {this.onCharSelected} 
-                             getData = {this.gotService.getAllHouses} />
+                            <ItemList onItemSelected = {this.onItemSelected} 
+                             getData = {this.gotService.getAllHouses} // это не вызов ф-йи (нет круглых скобок), а передаем ее в качестве пропсов в ItemList. Он ее и вызывае
+                             renderItem = {(item) => item.name}
+                              />
                         </Col>
                         <Col md = '6'>
                             <CharDetails charId = {this.state.selectedChar} />

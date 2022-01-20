@@ -7,7 +7,8 @@ export default class GotService{
         const res = await fetch (`${this._apiBase}${url}`);
         if(!res.ok){
             //getResource('https://jsonplaceholder.typicode.com/posts/100000')
-            throw new Error (`Could not fetch ${url}, status: ${res.status}`);
+            throw new Error (`Could not fetch ${url}`+
+            `, status: ${res.status}`);
         }
         return await res.json();      //содержит ответ от сервера;
     }
@@ -16,6 +17,7 @@ export default class GotService{
         //return this.getResource('https://www.anapioficeandfire.com/api/characters');//возвращает первую страницу где 10 персонажей
         //возвращает пятую страницу и хотим получить 10 персонажей  'https://www.anapioficeandfire.com/api/characters?page=5&pageSize=10'
         const res = await this.getResource('/characters?page=5'); //получаем массив персонажей
+        //console.log(res);
         return res.map(this._transformCharacter); //map перебирает массив (параметр - колбек функция)
     }
     //получение персонажа по id
@@ -25,21 +27,21 @@ export default class GotService{
     }
     //получение домов https://www.anapioficeandfire.com/api/houses
     getAllHouses = async () =>{
-        const res = await  this.getResource('/houses?page=5');
+        const res = await  this.getResource('/houses/');
         return res.map(this._transformHouse);
     }
     getHouse = async (id) => {
-        const res = await this.getResource(`/houses/${id}`);
+        const res = await this.getResource(`/houses/${id}/`);
         return this._transformHouse(res);
     }
 
     //получение книг  https://www.anapioficeandfire.com/api/books
    getAllBooks =  async () =>{
-        const res = await this.getResource('/books');
+        const res = await this.getResource('/books/');
         return res.map(this._trasformBook);
     }
     getBook = async (id) =>{
-        const res = await this.getResource(`/books/${id}`);
+        const res = await this.getResource(`/books/${id}/`);
         return this._trasformBook(res);
     }
 
@@ -47,13 +49,14 @@ export default class GotService{
         return (data)? data: 'no data :(';
     }
 
-    _extractId = (item) =>{
+    _extractId = (item) => {
         const idRegExp = /\/([0-9]*)$/;
-        console.log(idRegExp);
+        //console.log(item);
         return item.url.match(idRegExp)[1];
     }
 
-    _transformCharacter(char){
+    _transformCharacter = (char) => {
+       // console.log(char);
         return {
             id: this._extractId(char),
             name: this.isSet(char.name),
@@ -64,7 +67,7 @@ export default class GotService{
         }
     }
 
-    _transformHouse (house){
+    _transformHouse = (house) => {
         return {
             id: this._extractId(house),
             name: this.isSet(house.name),
@@ -76,7 +79,7 @@ export default class GotService{
         }
     }
 
-    _trasformBook(book){
+    _trasformBook = (book) => {
         return{
             id: this._extractId(book),
             name: this.isSet(book.name),

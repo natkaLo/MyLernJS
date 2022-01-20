@@ -1,20 +1,23 @@
 import React, { Component }  from "react";
-import {Col, Row, Container} from 'reactstrap';
+//import {Col, Row, Container} from 'reactstrap';
 import ItemList from '../itemList';
-import CharDetails from '../charDetails';
+import CharDetails,{Field} from '../charDetails';
 import ErrorMessage from "../errorMessage";
 import GotService from '../../services/gotService';
+import RowBlock from '../RowBlock'
+
+
 
 export default class CharacterPage extends Component{
     
     gotService = new GotService();
     state = {
-       // selectedChar:null,
-        selectedChar: 130,
+        selectedChar:130,
+        //selectedChar: null,
         error: false
     }
    
-    onCharSelected = (id) =>{
+    onItemSelected = (id) =>{
         this.setState({selectedChar:id})
     }
 
@@ -26,17 +29,29 @@ export default class CharacterPage extends Component{
         if(this.state.error){
             return <ErrorMessage/>
         }
+        const itemList = (
+            <ItemList onItemSelected = {this.onItemSelected}
+            getData = {this.gotService.getAllCharacters} // это не вызов ф-йи (нет круглых скобок), а передаем ее в качестве пропсов в ItemList. Он ее и вызывает
+            //паттерн - рендер функция - позволяет коттролировать - что именно отображать в наших компонентах
+            //renderItem = {(item) => item.name} //паттерн - рендер функция. передаем ее в качестве пропсов в ItemList. возмет те данные которые нам интересны из item листа и выведет их. Получает какой-то объект item и возвращает item.name
+           // renderItem = {(item) => `${item.name}(${item.gender})`}//Получает какой-то объект item и возвращает item.name и gender
+           //сразу вытащим name и gender
+           renderItem = {({name,gender}) =>`${name}(${gender})` }
+            />
+        )
+        const charDetails = (
+            //передаем внутрь CharDetails несколько компонентов, которые будут использованы им в виде пропсов//передаем в props.children
+            // в Field передаем в качестве пропсов field и label
+            <CharDetails charId = {this.state.selectedChar}>
+                <Field field = 'gender' label = 'Gender'/>
+                <Field field = 'born' label = 'Born'/>
+                <Field field = 'died' label = 'Died'/>
+                <Field field = 'culture' label = 'Culture'/>
+            </CharDetails>
+        )
+
         return (
-            <Row>
-            <Col md='6'>
-                <ItemList onCharSelected = {this.onCharSelected}
-                getData = {this.gotService.getAllCharacters}
-                renderItem = {(item) => item.name}/>
-            </Col>
-            <Col md='6'>
-                <CharDetails charId = {this.state.selectedChar}/>
-            </Col>
-            </Row>
+          <RowBlock left = {itemList} right = {charDetails}/>
         )
 
     }

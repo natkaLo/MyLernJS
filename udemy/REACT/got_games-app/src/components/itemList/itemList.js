@@ -5,40 +5,41 @@ import Spinner from '../spinner';
 
 export default class ItemList extends Component {
 
-   // gotService = new GotService(); - нужен без паттернов
     state = {
-        itmeList:null
+        itemList:null
     }
     componentDidMount(){
-        const {getData} = this.props; // передаем в качестве пропсов с верхнего уровня
-        getData()
-        .then((itmeList) =>{
+        const {getData} = this.props; // передаем функцию в качестве пропсов с верхнего уровня (из characterPage.js  getData = {this.gotService.getAllCharacters})
+        getData()                      // вызов getData() т.е вызов this.gotService.getAllCharacters
+        .then((itemList) =>{
             this.setState({
-                itmeList
+                itemList
             })
         })
     }
 
     renderItems(arr){
-        return arr.map((item,i)=>{
+        return arr.map((item)=>{
+            const{id} = item; //вытащим из item переменную id
+            const label = this.props.renderItem(item);// передали функцию в качестве пропсов с верхнего уровня (из characterPage.js renderItem = {(item) => item.name}). Отсюда передали в ф-цю item, ф-ция вернула name 
             return(
                 <li 
-                    key = {i}
+                    key = {id}
                     className="list-group-item"
-                    onClick={()=>this.props.onCharSelected(41 + i)}>
-                    {item.name}
+                    onClick={()=>this.props.onItemSelected(id)}>
+                    {label}
                 </li>
             )
         })
     }
 
     render() {
-        const {itmeList}= this.state;
-        if(!itmeList){
+        const {itemList}= this.state;
+        if(!itemList){
             return <Spinner/>
         }
 
-        const items = this.renderItems(itmeList);
+        const items = this.renderItems(itemList);
 
         return (
             <ul className="item-list list-group">
