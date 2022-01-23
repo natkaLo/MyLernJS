@@ -243,7 +243,7 @@ connect({
 //собрать react проект
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //https://www.npmjs.com/package/create-react-app
-//npm i create-react-app
+//npm i create-react-app //если загетали файлы и хотим сделать реакт - проэкт - заходим в папку с загетанным проэтом и пишем командв
 //npm i create-react-app -g - глобально
 //https://github.com/facebook/create-react-app
 
@@ -253,6 +253,15 @@ connect({
 //npm start - запуск приложения 
 // - если не запускается с ошибкой ""react-scripts" не распознается как внутренняя или внешняя команда, действующая программа" -
 //npm install react-scripts --save
+
+//ctrl+C - остановить реакт сервер
+
+//реакт роутинг
+//https://reacttraining.com/react-router/web/guides/quick-start
+//установка
+// npm i react-router-dom --save
+//импорт
+//import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // sass (css cтили) препроцессор

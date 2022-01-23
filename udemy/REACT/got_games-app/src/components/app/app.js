@@ -4,10 +4,10 @@ import Header from '../header';
 import RandomChar from '../randomChar';
 import ButtonToggleRandom from '../Button';
 import ErrorMessage from '../errorMessage';
-import CharacterPage from '../characterPage';
-import CharDetails from '../charDetails';
-import ItemList from '../itemList';
+import {CharacterPage, HousesPage,BooksPage, BooksItem } from '../pages';
+
 import GotService from '../../services/gotService';
+import {BrowserRouter as Router,Routes, Route,useParams } from 'react-router-dom';
 
 //const got = new GotService();
 // got.getAllCharacters()
@@ -48,50 +48,42 @@ export default class  App extends Component {
         if(this.state.error){
             return <ErrorMessage/>
         }
+       
+        function BookItems ()
+        {
+            let { id } = useParams();
+           // console.log(id);
+           //чтобы не терялся background у body -  в index css надо писат со слешом<link rel="stylesheet" href="/index.css"></link>
+            return (
+                 <BooksItem bookId = {id}/>
+             )
+        }
+        
 
          return (
-            <> 
+            <Router>
                 <Container>
-                    <Header />
-                </Container>
-                <Container>
-                    <Row>
-                        <Col lg={{size: 5, offset: 0}}>
-                           {randomCharacter}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col> <ButtonToggleRandom onToggleRandomCharcter = {this.onToggleRandomCharcter}/></Col>
-                    </Row>
-                   <CharacterPage/>
-                    <Row>
-                        <Col md = '6'>
-                            <ItemList 
-                             onItemSelected = {this.onItemSelected}
-                             getData = {this.gotService.getAllBooks} // это не вызов ф-йи (нет круглых скобок), а передаем ее в качестве пропсов в ItemList. Он ее и вызывае
-                              //паттерн - рендер функция - позволяет коттролировать - что именно отображать в наших компонентах
-                             renderItem = {(item) => item.name}
-                            //можно использовать и разметку
-                           // renderItem = {(item) => (<><span>{item.name}</span><button> Click Me</button></>)}
-                             />
-                        </Col>
-                        <Col md = '6'>
-                            <CharDetails charId = {this.state.selectedChar} />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md = '6'>
-                            <ItemList onItemSelected = {this.onItemSelected} 
-                             getData = {this.gotService.getAllHouses} // это не вызов ф-йи (нет круглых скобок), а передаем ее в качестве пропсов в ItemList. Он ее и вызывае
-                             renderItem = {(item) => item.name}
-                              />
-                        </Col>
-                        <Col md = '6'>
-                            <CharDetails charId = {this.state.selectedChar} />
-                        </Col>
-                    </Row>
-                </Container>
-             </>
+                        <Header />
+                    </Container>
+                    <Container>
+                        <Row>
+                            <Col lg={{size: 5, offset: 0}}>
+                            {randomCharacter}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col> <ButtonToggleRandom onToggleRandomCharcter = {this.onToggleRandomCharcter}/></Col>
+                        </Row>
+                        <Routes>
+                            <Route path= '/characters' element = {<CharacterPage />} />
+                            <Route path= '/houses' element = {<HousesPage />} /> 
+                            <Route path= '/books'  element = {<BooksPage />} />
+                            <Route path= 'books/:id/*'  element = {<BookItems />} />
+                          
+                        </Routes>
+                    </Container>
+              
+             </Router>
         )
     }
 }

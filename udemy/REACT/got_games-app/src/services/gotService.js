@@ -68,12 +68,13 @@ export default class GotService{
     }
 
     _transformHouse = (house) => {
+        //console.log(house);
         return {
             id: this._extractId(house),
             name: this.isSet(house.name),
             region:this.isSet(house.region),
             words:this.isSet(house.words),
-            titles: this.isSet(house.titles),
+            titles: this.isSet(house.titles[0]),
             overlord:this.isSet(house.overlord),
             ancestralWeapons:this.isSet(house.ancestralWeapons)
         }
