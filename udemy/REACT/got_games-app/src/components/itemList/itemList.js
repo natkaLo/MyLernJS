@@ -15,10 +15,10 @@ export default class ItemList extends Component {
             this.setState({
                 itemList
             })
-            if(itemList){
-                const{id} = itemList[0]; //вытащим из item переменную id
-                this.props.onItemSelected(id);
-            }
+            // if(itemList){
+            //     const{id} = itemList[0]; //вытащим из item переменную id
+            //     this.props.onItemSelected(id);
+            // }
         })
     }
 

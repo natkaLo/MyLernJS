@@ -68,7 +68,7 @@ export default class  App extends Component {
                     <Container>
                         <Row>
                             <Col lg={{size: 5, offset: 0}}>
-                            {randomCharacter}
+                                {randomCharacter}
                             </Col>
                         </Row>
                         <Row>
@@ -79,7 +79,6 @@ export default class  App extends Component {
                             <Route path= '/houses' element = {<HousesPage />} /> 
                             <Route path= '/books'  element = {<BooksPage />} />
                             <Route path= 'books/:id/*'  element = {<BookItems />} />
-                          
                         </Routes>
                     </Container>
               
