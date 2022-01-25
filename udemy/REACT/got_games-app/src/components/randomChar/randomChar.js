@@ -4,7 +4,7 @@ import GotService from '../../services/gotService';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 //import { Button } from 'reactstrap';
-
+import PropTypes from 'prop-types';
 export default class RandomChar extends Component {
 
     // constructor(props){
@@ -15,18 +15,23 @@ export default class RandomChar extends Component {
     gotServise = new GotService();
     state = {
         char:{},
-        loading:true
-        // name: null,
-        // gender: null,
-        // born: null,
-        // died: null,
-        // culture: null
+        loading:true,
+        error:false
     }
+    //пропсы по-умолчанию. Можно писать в классе или под ним. Принимают в себя объект. Если не были переданы пропсы свыше
+    // static defaultProps = {
+    //     interval: 15000
+    // }
+    // static propTypes = {
+    //     interval: PropTypes.number
+    // }
+
     //компонент появился и отрисовался на странице - здесь работаем с дом деревом и с сервером
     componentDidMount(){
         //console.log('mounting');
         this.updateChar();
-        this.timerId = setInterval(this.updateChar,1500);
+      // console.log(this.props.interval);
+        this.timerId = setInterval(this.updateChar,this.props.interval);//можем передать в качастве propcа свыше или записать здесь в качестве пропсов по умолчанию
     }
     //компоненент удаляется со страницы. Вызывается до того, как dom структура будет удалена со страницы
     componentWillUnmount(){
@@ -73,6 +78,27 @@ export default class RandomChar extends Component {
           
         );
     }
+}
+// можно писать под классом
+// //пропсы по-умолчанию. Принимают в себя объект. Если не были переданы пропсы свыше
+RandomChar.defaultProps = {
+    interval: 15000
+}
+//если не используем библиотеку  PropTypes from 'prop-types';
+//проверка типов пропортей (напр. interval должен быть числом)
+//ключ:функция (принимает 3 аргумента). props - список всех пропортей, которые приходят в компонент,propName - имя пропорти, componentName - имя компонента
+// RandomChar.propTypes = {
+//     interval: (props, propName, componentName) => {
+//         const value = props[propName]; 
+//         if(typeof value === 'number' && !isNaN(value)){
+//             return null
+//         }
+//         return new TypeError(`${componentName}:${propName} must be a number`) // вывод ошибки в консоль
+//     }
+// }
+//если  используем библиотеку  PropTypes from 'prop-types';
+RandomChar.propTypes = {
+    interval: PropTypes.number
 }
 
 const View = ({char}) => {

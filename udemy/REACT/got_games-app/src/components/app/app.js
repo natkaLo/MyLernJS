@@ -44,7 +44,7 @@ export default class  App extends Component {
     } 
     render(){
         const {shadowRandomChar} = this.state;
-        const randomCharacter = shadowRandomChar?<RandomChar/>:null;
+        const randomCharacter = shadowRandomChar?<RandomChar />:null;
         if(this.state.error){
             return <ErrorMessage/>
         }

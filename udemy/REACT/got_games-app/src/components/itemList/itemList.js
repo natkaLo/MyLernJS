@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './itemList.css';
 //import GotService from '../../services/gotService';  - нужен без паттернов
 import Spinner from '../spinner';
+import PropTypes from 'prop-types';
 
 export default class ItemList extends Component {
 
@@ -51,6 +52,16 @@ export default class ItemList extends Component {
             </ul>
         );
     }
+}
+//пропсы по-умолчанию. Принимают в себя объект. Если не были передана ф-ция onItemSelected в качестве пропса из housesPage.js или другого
+ItemList.defaultProps = {
+    onItemSelected: () => {}
+
+}
+//getData: PropTypes.arrayOf(PropTypes.object) //должен быть массив объектов
+ItemList.propTypes = {
+    onItemSelected:PropTypes.func
+   
 }
 
 
