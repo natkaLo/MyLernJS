@@ -49,13 +49,16 @@ export default class  App extends Component {
             return <ErrorMessage/>
         }
        
-        function BookItems ()
+        function BookItems ({ serv: Service })
         {
             let { id } = useParams();
            // console.log(id);
            //чтобы не терялся background у body -  в index css надо писат со слешом<link rel="stylesheet" href="/index.css"></link>
             return (
-                 <BooksItem bookId = {id}/>
+                 <BooksItem 
+                     bookId = {id}
+                     getSelPageDataProps = {Service} // передаем их в качестве пропсов в bookItem.
+                 />
              )
         }
         
@@ -75,10 +78,14 @@ export default class  App extends Component {
                             <Col> <ButtonToggleRandom onToggleRandomCharcter = {this.onToggleRandomCharcter}/></Col>
                         </Row>
                         <Routes>
-                            <Route path= '/characters' element = {<CharacterPage />} />
-                            <Route path= '/houses' element = {<HousesPage />} /> 
-                            <Route path= '/books'  element = {<BooksPage />} />
-                            <Route path= 'books/:id/*'  element = {<BookItems />} />
+                            <Route path= '/characters' element = {<CharacterPage  getAllPageDataProps = {this.gotService.getAllCharacters} getSelPageDataProps = {this.gotService.getCharacter} // это не вызов ф-йи (нет круглых скобок), а передаем их в качестве пропсов в characterPage. Он их передаст в itemList
+                             />} />
+                            <Route path= '/houses' element = {<HousesPage getAllPageDataProps = {this.gotService.getAllHouses} getSelPageDataProps = {this.gotService.getHouse} 
+                            />} /> 
+                            <Route path= '/books'  element = {<BooksPage getAllPageDataProps = {this.gotService.getAllBooks} // это не вызов ф-йи (нет круглых скобок), а передаем их в качестве пропсов в bookPage. Он их передаст в itemList
+                            />} />
+                            <Route path= 'books/:id/*'  element = {<BookItems serv={this.gotService.getBook} // это не вызов ф-йи (нет круглых скобок), а передаем  в качеcтве параметров в ф-цию компонент
+                            />} />
                         </Routes>
                     </Container>
               

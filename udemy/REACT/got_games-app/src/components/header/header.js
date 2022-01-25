@@ -26,7 +26,8 @@ const HeaderLinks = styled.ul`
         font-size: 18px;
     }
 `;
-
+// <Link to = '/books' - абсолютный путь(как бы к файлу) и тогда в  booksPage надо писать history(`/books/${itemId}`);
+// чтобы писать history(itemId); нужно относительные пути( надо писать <Link to = '/books/')
 const Header = () => {
     return (
         <HeaderBlock>
@@ -43,7 +44,7 @@ const Header = () => {
                     <Link to = '/houses'>Houses</Link>
                 </li>
                 <li>
-                    <Link to = '/books'>Books</Link>   
+                    <Link to = '/books/'>Books</Link>   
                 </li>
             </HeaderLinks>
         </HeaderBlock>

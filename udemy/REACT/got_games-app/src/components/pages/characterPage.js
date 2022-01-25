@@ -3,14 +3,10 @@ import React, { Component }  from "react";
 import ItemList from '../itemList';
 import ItemDetails,{Field} from '../itemDetails';
 import ErrorMessage from "../errorMessage";
-import GotService from '../../services/gotService';
 import RowBlock from '../RowBlock'
-
-
 
 export default class CharacterPage extends Component{
     
-    gotService = new GotService();
     state = {
         //selectedChar:130,
         selectedChar: null,
@@ -29,14 +25,16 @@ export default class CharacterPage extends Component{
         if(this.state.error){
             return <ErrorMessage/>
         }
+        const {getAllPageDataProps} = this.props; //передали сюда в качестве пропсов из app.js (getDataProps = {this.gotService.getAllCharacters} )
+        const {getSelPageDataProps} = this.props; //передали сюда в качестве пропсов из app.js (getDataProps = {this.gotService.getCharacter} )
         const itemList = (
             <ItemList onItemSelected = {this.onItemSelected}
-            getData = {this.gotService.getAllCharacters} // это не вызов ф-йи (нет круглых скобок), а передаем ее в качестве пропсов в ItemList. Он ее и вызывает
-            //паттерн - рендер функция - позволяет коттролировать - что именно отображать в наших компонентах
-            //renderItem = {(item) => item.name} //паттерн - рендер функция. передаем ее в качестве пропсов в ItemList. возмет те данные которые нам интересны из item листа и выведет их. Получает какой-то объект item и возвращает item.name
-           // renderItem = {(item) => `${item.name}(${item.gender})`}//Получает какой-то объект item и возвращает item.name и gender
-           //сразу вытащим name и gender
-           renderItem = {({name,gender}) =>`${name}(${gender})` }
+                        getData = {getAllPageDataProps} // Передаем в itemList функцию в качестве пропсов, которую передали сюда свыше
+                    //паттерн - рендер функция - позволяет коттролировать - что именно отображать в наших компонентах
+                    //renderItem = {(item) => item.name} //паттерн - рендер функция. передаем ее в качестве пропсов в ItemList. возмет те данные которые нам интересны из item листа и выведет их. Получает какой-то объект item и возвращает item.name
+                    // renderItem = {(item) => `${item.name}(${item.gender})`}//Получает какой-то объект item и возвращает item.name и gender
+                    //сразу вытащим name и gender
+                         renderItem = {({name,gender}) =>`${name}(${gender})` }
             />
         )
        
@@ -45,8 +43,8 @@ export default class CharacterPage extends Component{
             // в Field передаем в качестве пропсов field и label
            
             <ItemDetails itemId = {this.state.selectedChar}
-          
-            getData = {this.gotService.getCharacter}>
+                getData = {getSelPageDataProps} // Передаем в itemList функцию в качестве пропсов, которую передали сюда свыше
+            >
                 <Field field = 'gender' label = 'Gender'/>
                 <Field field = 'born' label = 'Born'/>
                 <Field field = 'died' label = 'Died'/>
