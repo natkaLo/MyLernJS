@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 const AppHeader = ({items}) => {
     let totalPrice = 0;
     items.forEach(element => {
-        totalPrice += element.price;
+        totalPrice += element.price*element.count;
     });
     return (
         <header className="header">
