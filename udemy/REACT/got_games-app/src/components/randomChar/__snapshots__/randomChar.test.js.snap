@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing<RandomChar/> RandomChar  have rendered correctly 1`] = `ShallowWrapper {}`;
+
+exports[`Testing<RandomChar/> RandomChar have rendered correctly 1`] = `
+<div
+  className="random-block rounded"
+>
+  <div
+    className="loadingio-spinner-spin-91jgnvmw819"
+  >
+    <div
+      className="ldio-6yxzrqei8yb"
+    >
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Testing<RandomChar/> RandomChar state "char" is empty object 1`] = `ShallowWrapper {}`;
+
+exports[`Testing<RandomChar/> Testing snap and state RandomChar  have rendered correctly 1`] = `ShallowWrapper {}`;
+
+exports[`Testing<RandomChar/> Testing snap and state RandomChar have rendered correctly 1`] = `
+<div
+  className="random-block rounded"
+>
+  <div
+    className="loadingio-spinner-spin-91jgnvmw819"
+  >
+    <div
+      className="ldio-6yxzrqei8yb"
+    >
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+      <div>
+        <div />
+      </div>
+    </div>
+  </div>
+</div>
+`;

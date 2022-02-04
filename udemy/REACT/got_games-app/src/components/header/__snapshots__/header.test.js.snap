@@ -1,0 +1,3 @@
+// Jest Snapshot v1, a
+
+exports[`Testing<Header/> Header have rendered correctly 1`] = `ShallowWrapper {}`;

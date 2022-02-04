@@ -334,3 +334,26 @@ f(1)(2);
 //устновка. Устанавливаем две разные библиотеки - redux (для паттерна redux) и react-redux (которая позволяет связывать технологии react и redux).
 //Заходим в папку проэкта и пишем
 //npm install redux react-redux
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// тесты enzyme  Jest
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//https://jestjs.io/en/
+//устновка.
+//https://enzymejs.github.io/enzyme/
+//npm install enzyme enyme-adapter-react-16 react-test-renderer //для 16 версии реакта
+//https://www.npmjs.com/package/@wojtekmaj/enzyme-adapter-react-17
+// npm install --save-dev @wojtekmaj/enzyme-adapter-react-17
+
+//для того, чтобы использовать enzyme нужно его настроить. Нужно создать файл setupTest.js и там заимпортировать
+// import Enzyme from 'enzyme';
+// import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+
+// Enzyme.configure({ adapter: new Adapter() });
+//запуск теста - в терминале
+//npm run test
+
+//https://github.com/jest-community/jest-extended
+//установка Jest extended
+//npm install jest-extended --save-dev
+//нужно его настроить в setupTest.js(см.выше) require('jest-extended'); и конфиг  const config = 
