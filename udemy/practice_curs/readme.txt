@@ -5,6 +5,9 @@
 //Если ошибка о политике безопастности- В PowerShell нужно было написать команду Set-ExecutionPolicy RemoteSigned. Затем ответить A(да, для всех)
 //Опять пишем gulp. 
 //остановить gulp - Ctrl+C
+//чтобы скомпилироват production версию
+//в терминале gulp build-prod-js
+//в папке dist записался script.js
 
 //установить jquery
 //npm i jquery --save

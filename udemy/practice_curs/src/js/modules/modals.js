@@ -1,7 +1,8 @@
 const modals = () => {
 
     function onModal(modal,  bShow = true){
-        const windows = document.querySelectorAll('[data-modal]');//в index.html мы пометили все модальные окна дата аттрибутом data-modal. чтобы закрыть все модальные окна если их открыто в документе несколько
+        const   windows = document.querySelectorAll('[data-modal]'),//в index.html мы пометили все модальные окна дата аттрибутом data-modal. чтобы закрыть все модальные окна если их открыто в документе несколько
+                scrollWidth = calcScroll();
         windows.forEach(item => {
             item.style.display = "none";  
         });
@@ -12,6 +13,7 @@ const modals = () => {
              //document.body.style.overflow = "hidden";
              //класс из будстрепа
              document.body.classList.add('modal-open');   
+             document.body.style.marginRight = `${scrollWidth}px`;//чтобы при появлении модального окна body документа не прыгало
         }
         else{
             modal.style.display = "none";
@@ -19,6 +21,7 @@ const modals = () => {
             //document.body.style.overflow = "";
              //класс из будстрепа
             document.body.classList.remove('modal-open');
+            document.body.style.marginRight ="0px";
         }
     }
     //привязка модального окна к определенному триггеру 
@@ -60,6 +63,23 @@ const modals = () => {
             onModal(document.querySelector(selector));
         },time);
     }
+
+    //чтобы при появлении модального окна body документа не прыгало. Т.к мы запрещаем прокрутку документа под модальным окном, скрол скрывается (поэтому и прыгает)
+    //расчитаем ширину скрол бара и заменим маргином для документа справа
+    function calcScroll(){
+        //cоздаем фейковый скрытый div 
+        let div = document.createElement('div');
+        div.style.width = '50px';   //нужно задать высоту и ширину чтобы div появился
+        div.style.height = '50px';
+        div.style.overflowY = 'scroll';
+        div.style.visibility = 'hidden';
+
+        document.body.appendChild(div); //cтавим div на страницу
+        let scrollWidth = div.offsetWidth - div.clientWidth; //div.offsetWidth - полная ширина,  div.clientWidth - ширина без прокрутки
+        div.remove();  //удаляем фейковый див со страницы
+        return scrollWidth;
+    }
+
 
     bindModal('.popup_engineer_btn','.popup_engineer','.popup_engineer .popup_close');
     bindModal('.phone_link','.popup','.popup .popup_close');
