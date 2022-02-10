@@ -954,13 +954,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var modals = function modals() {
+  //переменная следит была ли нажата какая-то кнопка
+  var btnPressed = false;
+
   function onModal(modal) {
     var bShow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     var windows = document.querySelectorAll('[data-modal]'),
         //в index.html мы пометили все модальные окна дата аттрибутом data-modal. чтобы закрыть все модальные окна если их открыто в документе несколько
     scrollWidth = calcScroll();
     windows.forEach(function (item) {
-      item.style.display = "none";
+      item.style.display = "none"; //добавим анимацию из animate.css
+
+      item.classList.add('animated', 'fadeIn');
     });
 
     if (bShow) {
@@ -984,7 +989,7 @@ var modals = function modals() {
 
 
   function bindModal(triggerSelector, modalSelector, closeSelector) {
-    var closeClickOverlay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+    var destroy = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
     var trigger = document.querySelectorAll(triggerSelector),
         modal = document.querySelector(modalSelector),
         close = document.querySelector(closeSelector);
@@ -992,6 +997,12 @@ var modals = function modals() {
       item.addEventListener('click', function (event) {
         if (event && event.target) {
           event.preventDefault();
+          btnPressed = true; // пользователь нажал на какую-то кнопку
+
+          if (destroy) {
+            item.remove(); //удалим елемент со страницы
+          }
+
           onModal(modal);
         }
       });
@@ -1001,7 +1012,7 @@ var modals = function modals() {
     }); //чтобы окно закрывалась по клику мимо окна
 
     modal.addEventListener('click', function (event) {
-      if (event.target === modal && closeClickOverlay) {
+      if (event.target === modal) {
         onModal(modal, false);
       }
     });
@@ -1043,11 +1054,29 @@ var modals = function modals() {
     div.remove(); //удаляем фейковый див со страницы
 
     return scrollWidth;
+  } //ф-ция открывает модальное окно - подарок когда пользователь доскролил до конца документа и не была нажата ни одна кнопка до этого(btnPressed)
+
+
+  function openByScroll(selector) {
+    //повешаем событие скролл на объект window
+    //window.scrollY - сколько пикселей пользователь отлистал сверху
+    //document.documentElement.clientHeight - тот контент, который сейчас виден пользователю(включает себя только padding)
+    // document.documentElement.scrollHeight - полная высота страницы(включает себя только padding). Работает в стандартном режиме
+    //document.body.scrollHeight - для старых браузеров. В некоторых document.body.scrollHeight больше, чем document.documentElement.scrollHeight
+    window.addEventListener('scroll', function () {
+      var scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+
+      if (!btnPressed && window.scrollY + document.documentElement.clientHeight >= scrollHeight) {
+        document.querySelector(selector).click(); //инициируем клик по элементу
+      }
+    });
   }
 
   bindModal('.button-design', '.popup-design', '.popup-design .popup-close');
   bindModal('.button-consultation', '.popup-consultation', '.popup-consultation .popup-close');
-  showModalByTime('.popup-consultation', 5000);
+  bindModal('.fixed-gift', '.popup-gift', '.popup-gift .popup-close', true); //showModalByTime('.popup-consultation', 5000);
+
+  openByScroll('.fixed-gift');
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);

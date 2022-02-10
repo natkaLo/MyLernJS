@@ -1,10 +1,14 @@
 const modals = () => {
 
+    //переменная следит была ли нажата какая-то кнопка
+    let btnPressed = false;
     function onModal(modal,  bShow = true){
         const   windows = document.querySelectorAll('[data-modal]'),//в index.html мы пометили все модальные окна дата аттрибутом data-modal. чтобы закрыть все модальные окна если их открыто в документе несколько
                 scrollWidth = calcScroll();
         windows.forEach(item => {
             item.style.display = "none";  
+            //добавим анимацию из animate.css
+            item.classList.add('animated','fadeIn');
         });
 
         if(bShow){
@@ -27,30 +31,33 @@ const modals = () => {
     //привязка модального окна к определенному триггеру 
     //triggerSelector - селектор кнопки по которой будем кликать, modalSelector - модальное окно, которое будем показывать
     //closeSelector - селектор по которому будем закрывать окно, closeClickOverlay - будем ли закрывать по клику на подложку
-    function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true){
+    function bindModal(triggerSelector, modalSelector, closeSelector, destroy = true){
 
         const   trigger = document.querySelectorAll(triggerSelector),
                 modal = document.querySelector(modalSelector),
                 close = document.querySelector(closeSelector);
                 
-
+        
         trigger.forEach(item =>{
-
             item.addEventListener('click', (event) => {
                 if(event && event.target){
                     event.preventDefault();
-                
-                onModal(modal);
+
+                    btnPressed = true;// пользователь нажал на какую-то кнопку
+
+                    if(destroy){
+                        item.remove(); //удалим елемент со страницы
+                    }
+                    onModal(modal);
                 }
             });
-
         });
         close.addEventListener('click', () => {
             onModal(modal,false);
         });
         //чтобы окно закрывалась по клику мимо окна
         modal.addEventListener('click', (event) => {
-            if(event.target === modal && closeClickOverlay){
+            if(event.target === modal){
                 onModal(modal,false);
             }
 
@@ -91,10 +98,26 @@ const modals = () => {
         return scrollWidth;
     }
 
+    //ф-ция открывает модальное окно - подарок когда пользователь доскролил до конца документа и не была нажата ни одна кнопка до этого(btnPressed)
+    function openByScroll(selector){
+        //повешаем событие скролл на объект window
+        //window.scrollY - сколько пикселей пользователь отлистал сверху
+        //document.documentElement.clientHeight - тот контент, который сейчас виден пользователю(включает себя только padding)
+        // document.documentElement.scrollHeight - полная высота страницы(включает себя только padding). Работает в стандартном режиме
+        //document.body.scrollHeight - для старых браузеров. В некоторых document.body.scrollHeight больше, чем document.documentElement.scrollHeight
+        window.addEventListener('scroll', () => {
+            let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+            if(!btnPressed && (window.scrollY + document.documentElement.clientHeight >= scrollHeight)){
+                document.querySelector(selector).click(); //инициируем клик по элементу
+            }
+        });
+    }
 
     bindModal('.button-design', '.popup-design', '.popup-design .popup-close');
-    bindModal('.button-consultation','.popup-consultation','.popup-consultation .popup-close')
-    showModalByTime('.popup-consultation', 5000);
+    bindModal('.button-consultation','.popup-consultation','.popup-consultation .popup-close');
+    bindModal('.fixed-gift', '.popup-gift', '.popup-gift .popup-close',true);
+    //showModalByTime('.popup-consultation', 5000);
+    openByScroll('.fixed-gift');
 };
 
 export default modals;
