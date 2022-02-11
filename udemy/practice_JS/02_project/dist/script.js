@@ -931,11 +931,15 @@ module.exports = g;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
+/* harmony import */ var _modules_sliders__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/sliders */ "./src/js/modules/sliders.js");
+
 
 window.addEventListener("DOMContentLoaded", function () {
   'use strict';
 
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
+  Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.main-slider-item', 'vertical');
 });
 
 /***/ }),
@@ -1080,6 +1084,93 @@ var modals = function modals() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/sliders.js":
+/*!***********************************!*\
+  !*** ./src/js/modules/sliders.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+//slides - селектор, dir- в какую сторону двигается слайдер, prev, next - кнопки
+var sliders = function sliders(slides, dir, prev, next) {
+  var slideIndex = 1,
+      //текущий слайд
+  paused = false; // делаем паузу для слайдера при наведении мыши на него
+
+  var items = document.querySelectorAll(slides);
+
+  function showSlides(n) {
+    //n - индекс слайда, который должны показать
+    if (n < 1 || n > items.length) {
+      n = n < 1 ? items.length : 1;
+    }
+
+    slideIndex = n; //нужно скрыть все остальные слайды
+
+    items.forEach(function (item) {
+      item.classList.add("animated"); //ставим animated класс для того, чтобы ставить классы slideInRight...
+
+      item.style.display = "none";
+    }); //показать только под индексом slideIndex (slideIndex  у нас = 1, поэтому -1)
+
+    items[slideIndex - 1].style.display = 'block';
+  } //покажем сначала первый слайд
+
+
+  showSlides(slideIndex);
+
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+
+  ;
+
+  function setStyles(item, addClassStyle, removeClassStyle) {
+    item.classList.remove(removeClassStyle);
+    item.classList.add(addClassStyle);
+  }
+
+  try {
+    //если селекторы кнопок не были переданы, попадем в catch и не обрушиться все
+    var prevBtn = document.querySelector(prev),
+        nextBtn = document.querySelector(next);
+    prevBtn.addEventListener('click', function () {
+      plusSlides(-1);
+      setStyles(items[slideIndex - 1], 'slideInRight', 'slideInLeft');
+    });
+    nextBtn.addEventListener('click', function () {
+      plusSlides(1);
+      setStyles(items[slideIndex - 1], 'slideInLeft', 'slideInRight');
+    });
+  } catch (e) {}
+
+  function activateAnimation() {
+    paused = setInterval(function () {
+      plusSlides(1);
+      dir === 'vertical' ? items[slideIndex - 1].classList.add('slideInDown') : setStyles(items[slideIndex - 1], 'slideInLeft', 'slideInRight');
+    }, 3000);
+  }
+
+  items[0].parentNode.addEventListener('mouseenter', function () {
+    clearInterval(paused);
+  });
+  items[0].parentNode.addEventListener('mouseleave', function () {
+    activateAnimation();
+  }); //первичная инициализация анимации
+
+  activateAnimation();
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (sliders);
 
 /***/ })
 
