@@ -31,7 +31,7 @@ const modals = () => {
     //привязка модального окна к определенному триггеру 
     //triggerSelector - селектор кнопки по которой будем кликать, modalSelector - модальное окно, которое будем показывать
     //closeSelector - селектор по которому будем закрывать окно, closeClickOverlay - будем ли закрывать по клику на подложку
-    function bindModal(triggerSelector, modalSelector, closeSelector, destroy = true){
+    function bindModal(triggerSelector, modalSelector, closeSelector, destroy = false){
 
         const   trigger = document.querySelectorAll(triggerSelector),
                 modal = document.querySelector(modalSelector),
