@@ -4,6 +4,7 @@ import forms from "./modules/forms";
 import mask from "./modules/mask";
 import checkTextInputs from "./modules/checkTextInputs";
 import showMoreStyles from './modules/showMoreStyles';
+import calc from './modules/calc';
 
 window.addEventListener("DOMContentLoaded", () =>{
     'use strict';
@@ -17,5 +18,9 @@ window.addEventListener("DOMContentLoaded", () =>{
 
     checkTextInputs('[name = "name"]');
     checkTextInputs('[name = "message"]');
-    showMoreStyles('.button-styles', '.styles-2');
+    //показ скрытых в верстке карточек
+    // showMoreStyles('.button-styles', '.styles-2');
+    // показ карточек, загруженных из db.json через JSON сервер
+    showMoreStyles('.button-styles', '#styles .row'); // вставляем в элемент с классом row, который нах-ся в элементе с id style
+    calc('#size','#material','#options','.promocode','.calc-price');
 });

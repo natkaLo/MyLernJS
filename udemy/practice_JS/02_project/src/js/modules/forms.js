@@ -1,4 +1,5 @@
-//import CheckNumInputs from './checkNumImputs';
+import { postData } from "../services/requests";
+
 const forms = () => {
     //получим все формы на странице и все импуты для их очистки после отправки данных на сервер. Получим инпуты для загрузки изображений по аттрибуту
     const   form = document.querySelectorAll('form'),
@@ -21,17 +22,6 @@ const forms = () => {
         question: 'assets/question.php'
     };
 
-    // чтобы javaScript знал что ф-ция имеет асинхронные операции  и ждал используем async await
-    //async пишется перед ф-цией в которой есть асинхронные операции(например fetch) a await пишется непостредственно перед асинхронной операцией
-    const postData = async(url, data) => {
-        //т.к  отправим в формате FormData, заголовок устанавливать не нужно
-        let res = await fetch(url, {
-            method: "POST",
-            body: data
-        });
-        //res.text() тоже асинхронная операция. Поэтому пишем await
-        return await res.text();
-    };
 
     const clearInputs = () => {
         inputs.forEach(item => {
@@ -85,6 +75,12 @@ const forms = () => {
             //для формы калькулятора в index.html добавили класс calc_form
              let api = (item.closest('.popup-design') || item.classList.contains('calc_form'))?path.designer:path.question;
              console.log(api);
+
+           // устанавливаем форме сумму в дата аттрибут в calc js
+            if(item.getAttribute('data-calc')){
+               formData.append("sum",item.getAttribute('data-calc'));
+               console.log(item.getAttribute('data-calc'));
+            }
             
             // //отправляем данные на сервер (нужно знать, в каком формате сервер принимает данные. Если в фор-те JSon - надо перевести данные в JSON)
             // //cейчас просто отправим в формате FormData
