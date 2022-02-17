@@ -5,6 +5,9 @@ import mask from "./modules/mask";
 import checkTextInputs from "./modules/checkTextInputs";
 import showMoreStyles from './modules/showMoreStyles';
 import calc from './modules/calc';
+import filter from './modules/filter';
+import pictureSize from './modules/pictureSize';
+import burger from './modules/burger';
 
 window.addEventListener("DOMContentLoaded", () =>{
     'use strict';
@@ -23,4 +26,8 @@ window.addEventListener("DOMContentLoaded", () =>{
     // показ карточек, загруженных из db.json через JSON сервер
     showMoreStyles('.button-styles', '#styles .row'); // вставляем в элемент с классом row, который нах-ся в элементе с id style
     calc('#size','#material','#options','.promocode','.calc-price');
+
+    filter();
+    pictureSize('.sizes-block');
+    burger('.burger-menu', '.burger');
 });
