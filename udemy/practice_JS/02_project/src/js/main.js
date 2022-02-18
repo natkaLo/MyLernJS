@@ -8,6 +8,7 @@ import calc from './modules/calc';
 import filter from './modules/filter';
 import pictureSize from './modules/pictureSize';
 import burger from './modules/burger';
+import accordion from './modules/accordion';
 
 window.addEventListener("DOMContentLoaded", () =>{
     'use strict';
@@ -30,4 +31,9 @@ window.addEventListener("DOMContentLoaded", () =>{
     filter();
     pictureSize('.sizes-block');
     burger('.burger-menu', '.burger');
+
+      //способ создания аккардиона с помощью css 
+    // accordion('.accordion-heading', '.accordion-block');
+    //с помощью java script
+    accordion('.accordion-heading');
 });
