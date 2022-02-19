@@ -14,7 +14,7 @@ const accordion = (triggersSelector) => {
                 {
                     btnClicked.classList.remove('active-style');
                     btnClicked.nextElementSibling.classList.remove('active-content');
-                    btnClicked.nextElementSibling.style.maxHeight = '0px'
+                    btnClicked.nextElementSibling.style.maxHeight = '0px';
                 }
             });
             if(!bCurrentBtnActive) {     //если кликнутая была закрыта - откроем

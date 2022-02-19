@@ -9,6 +9,8 @@ import filter from './modules/filter';
 import pictureSize from './modules/pictureSize';
 import burger from './modules/burger';
 import accordion from './modules/accordion';
+import scrolling from './modules/scrolling';
+import drop from './modules/drop';
 
 window.addEventListener("DOMContentLoaded", () =>{
     'use strict';
@@ -36,4 +38,8 @@ window.addEventListener("DOMContentLoaded", () =>{
     // accordion('.accordion-heading', '.accordion-block');
     //с помощью java script
     accordion('.accordion-heading');
+
+    //плавный скролл
+    scrolling('.pageup');
+    drop();
 });

@@ -4412,6 +4412,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pictureSize */ "./src/js/modules/pictureSize.js");
 /* harmony import */ var _modules_burger__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/burger */ "./src/js/modules/burger.js");
 /* harmony import */ var _modules_accordion__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/accordion */ "./src/js/modules/accordion.js");
+/* harmony import */ var _modules_scrolling__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/scrolling */ "./src/js/modules/scrolling.js");
+/* harmony import */ var _modules_drop__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/drop */ "./src/js/modules/drop.js");
+
+
 
 
 
@@ -4446,7 +4450,10 @@ window.addEventListener("DOMContentLoaded", function () {
   // accordion('.accordion-heading', '.accordion-block');
   //с помощью java script
 
-  Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_10__["default"])('.accordion-heading');
+  Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_10__["default"])('.accordion-heading'); //плавный скролл
+
+  Object(_modules_scrolling__WEBPACK_IMPORTED_MODULE_11__["default"])('.pageup');
+  Object(_modules_drop__WEBPACK_IMPORTED_MODULE_12__["default"])();
 });
 
 /***/ }),
@@ -4698,6 +4705,97 @@ var checkTextInputs = function checkTextInputs(selector) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (checkTextInputs);
+
+/***/ }),
+
+/***/ "./src/js/modules/drop.js":
+/*!********************************!*\
+  !*** ./src/js/modules/drop.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.function.name */ "./node_modules/core-js/modules/es.function.name.js");
+/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.split */ "./node_modules/core-js/modules/es.string.split.js");
+/* harmony import */ var core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_split__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+var drop = function drop() {
+  //если 8 событий, которые связаны с перетаскиванием
+  //drag *
+  //dragend *
+  //dragenter - событие возникает, когда пертаскиваемый объект находится над drop area (втащили)(drop area - любой элемент, который воспринимает это событие)
+  //dragexit *
+  //dragleave - оьъект за пределами drop area (выташили)
+  //dragover  - срабатывает каждые несколько млсек пока объект находиться над drop area
+  //dragstart *
+  //drop  - возникает, когда пользователь отпустил кнопку мыши и наш объект отправлен в drop area
+  // * - события срабатывают на элементе, который мы перетаскиваем
+  var fileInputs = document.querySelectorAll('[name = "upload"]'); // по аттрибуту
+  // чтобы не вешать каждое событие отдельно
+  //создадим массив событий
+
+  ['dragenter', 'dragleave', 'dragover', 'drop'].forEach(function (evenName) {
+    fileInputs.forEach(function (input) {
+      input.addEventListener(evenName, preventDefauls, false);
+    });
+  });
+
+  function preventDefauls(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  } //подсветим элемент, на который тащим
+
+
+  function higlight(item) {
+    item.closest('.file_upload').style.border = "5px solid yellow";
+    item.closest('.file_upload').style.backgroundColor = "rgba(0,0,0,.7)";
+  } //уберем подсветку
+
+
+  function unhiglight(item) {
+    item.closest('.file_upload').style.border = "none";
+
+    if (item.closest('.calc_form')) {
+      item.closest('.file_upload').style.backgroundColor = "#fff";
+    } else {
+      item.closest('.file_upload').style.backgroundColor = "#ededed";
+    }
+  }
+
+  ['dragenter', 'dragover'].forEach(function (evenName) {
+    fileInputs.forEach(function (input) {
+      input.addEventListener(evenName, function () {
+        return higlight(input);
+      }, false);
+    });
+  });
+  ['dragleave', 'drop'].forEach(function (evenName) {
+    fileInputs.forEach(function (input) {
+      input.addEventListener(evenName, function () {
+        return unhiglight(input);
+      }, false);
+    });
+  });
+  fileInputs.forEach(function (input) {
+    input.addEventListener('drop', function (event) {
+      input.files = event.dataTransfer.files;
+      var arr = input.files[0].name.split('.');
+      var dots = arr[0].length > 6 ? "..." : ".";
+      var name = arr[0].substring(0, 6) + dots + arr[1];
+      input.previousElementSibling.textContent = name;
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (drop);
 
 /***/ }),
 
@@ -5210,6 +5308,127 @@ var pictureSize = function pictureSize(imgSelector) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (pictureSize);
+
+/***/ }),
+
+/***/ "./src/js/modules/scrolling.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/scrolling.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var scrolling = function scrolling(upSelector) {
+  var upElem = document.querySelector(upSelector); //кнопка стрелочка прокрутки до верха документа
+
+  window.addEventListener('scroll', function () {
+    if (document.documentElement.scrollTop > 1650) {
+      //отскролили от верха документа
+      upElem.classList.add('animated', 'fadeIn');
+      upElem.classList.remove('fadeOut');
+    } else {
+      upElem.classList.add('fadeOut');
+      upElem.classList.remove('fadeIn');
+    }
+  }); //скроллинг на простом java sript
+  //плавный скрол по клику на кнопку стрелочку
+  // const   element = document.documentElement,
+  //         body = document.body;
+  // const calcScroll = () => {
+  //     upElem.addEventListener('click', function(event){
+  //         //какое расстояние отскролировано сверху
+  //         let scrollTop = Math.round(body.scrollTop || element.scrollTop); // для старых браузеров может то или то не существовать
+  //         // проверим, что мы кликнули по ссылке. Тогда хеш (виден в адресной строке) не может быть пустым
+  //         if(this.hash !== ''){
+  //             event.preventDefault();
+  //             //нужно получить елемент, к которому будем скролить
+  //             let hashElement = document.querySelector(this.hash), 
+  //                 hashElementTop = 0; //сколько нужно еще пролистать пикселей до родителя этого хеш элемента (на сколько пикселей отстоит хеш элемент от его родительского элемента) 
+  //             //hashElement.offsetParent - свойство обозначает тот элемент, относительно которого позиционируется хеш элемент (как бы родитель)
+  //             //переберем всех родителей искомого (хеш) элемента и узнаем, сколько пикселей нам нужно проскролить
+  //             while(hashElement.offsetParent){
+  //                 hashElementTop += hashElement.offsetTop; //определяем, сколько пикселей осталось до верхней границы хеш элемента 
+  //                 hashElement = hashElement.offsetParent; //cледующий родитель хеш элемента
+  //             }
+  //             hashElementTop = Math.round(hashElementTop);
+  //             smoothScroll(scrollTop, hashElementTop, this.hash);
+  //         }
+  //     });
+  // };
+  // const smoothScroll = (from, to, hash) => {
+  //     let timeInterval = 1,
+  //         prevScrollTop,
+  //         speed;
+  //     //в какую сторону будем скролить
+  //     if(to> from){       //сверху вниз
+  //         speed = 30;
+  //     }
+  //     else{               //снизу вверх
+  //         speed = -30;
+  //     }
+  //     let move = setInterval(function(){
+  //         let scrollTop = Math.round(body.scrollTop || element.scrollTop); 
+  //         if(prevScrollTop === scrollTop || (to > from && scrollTop >= to) || (to < from && scrollTop <= to)){
+  //             //долистали до нужного елемена
+  //             clearInterval(move);
+  //             //изменяем адресную строку
+  //             history.replaceState(history.state, document.title, location.href.replace(/#.*$/g,'')+hash);
+  //         }
+  //         else{
+  //             body.scrollTop += speed;
+  //             element.scrollTop += speed;
+  //             prevScrollTop = scrollTop;
+  //         }
+  //     },timeInterval);
+  // };
+  // calcScroll();
+  //скроллинг на request animation frame
+  //получаем все элементы ссылки по аттрибуту. Карретка ^ - означает - что данное значение аттрибута должно быть прямо сначала строки
+  //то есть ищем все ссылки, которые начинаются с # (по факту - локальные ссылки)
+
+  var links = document.querySelectorAll('[href^="#"]'),
+      speed = 0.3;
+  links.forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      var widthTop = document.documentElement.scrollTop,
+          hash = this.hash,
+          toBlock = document.querySelector(hash).getBoundingClientRect().top,
+          //получаем верх
+      start = null;
+      requestAnimationFrame(step); //step - колбек ф-ция
+      //step вызывается несколько раз
+      //time сюда передается автоматически
+
+      function step(time) {
+        if (start === null) {
+          //если ф-ция запустилась первый раз
+          start = time;
+        }
+
+        var progress = time - start,
+            //кол-во пикселей на которые нам надо прилистать в течении этой анимации и в какую сторону
+        r = toBlock < 0 ? Math.max(widthTop - progress / speed, widthTop + toBlock) : Math.min(widthTop + progress / speed, widthTop + toBlock);
+        document.documentElement.scrollTo(0, r); //когда анимация должна остановиться (r будет равен widthTop+toBlock)
+
+        if (r != widthTop + toBlock) {
+          //если еще не долистали
+          requestAnimationFrame(step);
+        } else {
+          location.hash = hash;
+        }
+      }
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (scrolling);
 
 /***/ }),
 
