@@ -5195,9 +5195,14 @@ window.addEventListener('DOMContentLoaded', function () {
     btns: '.next',
     container: '.page'
   }, '.hanson');
-  slider.render(); //const modulePageSlider = new MainSlider({btns:'.next', container: '.moduleapp',next:".nextmodule", prev:".prevmodule"});
-  //modulePageSlider.render();
-
+  slider.render();
+  var modulePageSlider = new _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    btns: '.next',
+    container: '.moduleapp',
+    next: ".nextmodule",
+    prev: ".prevmodule"
+  });
+  modulePageSlider.render();
   var showUpSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({
     container: '.showup__content-slider',
     prev: '.showup__prev',
@@ -5222,8 +5227,8 @@ window.addEventListener('DOMContentLoaded', function () {
     activeClass: 'feed__item-active'
   });
   feedSlider.init();
-  var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.showup .play', '.overlay');
-  player.init();
+  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.showup .play', '.overlay').init();
+  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.module__video-item .play', '.overlay').init();
   var oldDifference = new _modules_difference__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officer__card-item');
   oldDifference.init();
   new _modules_difference__WEBPACK_IMPORTED_MODULE_3__["default"]('.officernew', '.officer__card-item').init();
@@ -5557,8 +5562,11 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VideoPlayer; });
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
-/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_array_filter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.filter */ "./node_modules/core-js/modules/es.array.filter.js");
+/* harmony import */ var core_js_modules_es_array_filter__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_filter__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_1__);
+
 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5576,7 +5584,9 @@ function () {
     //triggers - тригеры, по которым будем запускать видео, overlayWindow - окно в кот. будем показывть видео
     this.btns = document.querySelectorAll(triggers);
     this.overlayWindow = document.querySelector(overlayWindow);
-    this.closeBtn = this.overlayWindow.querySelector('.close');
+    this.closeBtn = this.overlayWindow.querySelector('.close'); //жестко привязываем контекст вызова
+
+    this.onPlayerStateChange = this.onPlayerStateChange.bind(this);
   }
 
   _createClass(VideoPlayer, [{
@@ -5584,15 +5594,39 @@ function () {
     value: function bindTriggers() {
       var _this = this;
 
-      this.btns.forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-          if (document.querySelector('iframe#frame')) {
-            //если мы уже нажимали кнопку - video frame уже создался(чтобы не создавать много раз объект плеера)
-            _this.overlayWindow.style.display = 'flex'; //просто покажем окно
-          } else {
-            var path = btn.getAttribute('data-url'); //идентификатор видео лежит в кнопке в аттрибуте data-url
+      this.btns.forEach(function (btn, i) {
+        try {
+          // по заданию на странице modules.html нужно разблокировать просмотр следующего видио после того, как видео запущенное (this.activeBtn) просмотрено до конца
+          //получим первого родителя у видео с активной кнопкой(closest) и его первого соседа по верстке(nextElementSibling). Нам нужно поставить аттрибут заблокированного видео(у него тот же родитель)
+          var blockedElem = btn.closest('.module__video-item').nextElementSibling;
 
-            _this.createPlayer(path);
+          if (i % 2 == 0) {
+            blockedElem.setAttribute('data-disabled', true);
+          }
+        } catch (e) {}
+
+        btn.addEventListener('click', function (e) {
+          if (!btn.closest('.module__video-item') || btn.closest('.module__video-item').getAttribute('data-disabled') !== 'true') {
+            _this.activeBtn = btn; // запомним кнопку на которую кликнули
+
+            if (document.querySelector('iframe#frame')) {
+              //если мы уже нажимали кнопку - video frame уже создался(чтобы не создавать много раз объект плеера)
+              _this.overlayWindow.style.display = 'flex'; //просто покажем окно
+
+              if (_this.path !== btn.getAttribute('data-url')) {
+                //ксли кликнули по другой кнопке (путь к видео другой)
+                _this.path = btn.getAttribute('data-url'); //идентификатор видео лежит в кнопке в аттрибуте data-url
+                //загружаем новое видео в наш плеер
+
+                _this.player.loadVideoById({
+                  videoId: _this.path
+                });
+              }
+            } else {
+              _this.path = btn.getAttribute('data-url'); //идентификатор видео лежит в кнопке в аттрибуте data-url
+
+              _this.createPlayer(_this.path);
+            }
           }
         });
       });
@@ -5616,25 +5650,61 @@ function () {
         //frame cкопировали из index.htm. Он находиться  в <div class="overlay">
         height: '100%',
         width: '100%',
-        videoId: "".concat(url) //уникальное id видео, которое будем подгружать с youtube
-
+        videoId: "".concat(url),
+        //уникальное id видео, которое будем подгружать с youtube
+        events: {
+          //нам нужны события от плеера - просмотрено видео до конца, поставлено на паузу и др
+          'onStateChange': this.onPlayerStateChange
+        }
       }); //console.log(this.player);
 
       this.overlayWindow.style.display = 'flex';
     }
   }, {
+    key: "onPlayerStateChange",
+    value: function onPlayerStateChange(state) {
+      try {
+        // по заданию на странице modules.html нужно разблокировать просмотр следующего видио после того, как видео запущенное (this.activeBtn) просмотрено до конца
+        //получим первого родителя у видео с кликнутой кнопкой play(closest) и его первого соседа по верстке(nextElementSibling). Нам нужно изменить стили у заблокированного видео(у него тот же родитель)
+        var blockedElem = this.activeBtn.closest('.module__video-item').nextElementSibling; //получим иконку из кнопки play. Мы ее должны будем поместить в заблокированную кнопку
+        //cкопируем ноду с svg - true - применим глубокое копирование (все, что находиться в ноде)
+
+        var playBtn = this.activeBtn.querySelector('svg').cloneNode(true);
+
+        if (state.data === 0) {
+          // 0 - видео закончено
+          if (blockedElem.querySelector('.play__circle').classList.contains('closed')) {
+            //если следующий элемент заблокирован
+            blockedElem.querySelector('.play__circle').classList.remove('closed'); //удалим значек замочка
+
+            blockedElem.querySelector('svg').remove(); //установим значек стрелочки
+
+            blockedElem.querySelector('.play__circle').appendChild(playBtn);
+            blockedElem.querySelector('.play__text').textContent = 'play video';
+            blockedElem.querySelector('.play__text').classList.remove('attention');
+            blockedElem.style.opacity = 1;
+            blockedElem.style.filter = 'none';
+            blockedElem.setAttribute('data-disabled', 'false');
+          }
+        }
+      } catch (e) {}
+    }
+  }, {
     key: "init",
     value: function init() {
-      //инициализация плеера
-      //асинхронное подключение скрипта с api video (iframe_api)
-      var tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0]; //получаем первый элемент с тегом script, который уже есть в документе
+      //если мы получили кнопки по переданному тригеру
+      if (this.btns.length > 0) {
+        //инициализация плеера
+        //асинхронное подключение скрипта с api video (iframe_api)
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0]; //получаем первый элемент с тегом script, который уже есть в документе
 
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); //вставляем перед ним наш тег со скриптом api video (iframe_api) 
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); //вставляем перед ним наш тег со скриптом api video (iframe_api) 
 
-      this.bindTriggers();
-      this.bindCloseBtn();
+        this.bindTriggers();
+        this.bindCloseBtn();
+      }
     }
   }]);
 
