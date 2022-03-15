@@ -56,6 +56,7 @@ export default class MainSlider extends SliderBase{
             });
             btn.parentNode.previousElementSibling.addEventListener('click', (e) =>{  //при клике на логотип - переход к первому слайду
                 this.slideIndex = 1;
+                console.log('ccc');
                 this.showSlides(this.slideIndex);
                 });
             });
