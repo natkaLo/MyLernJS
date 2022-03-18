@@ -7,6 +7,12 @@ $.prototype.init = function(selector){
     if(!selector){
         return this; //возвращаем просто пустой объект
     }
+    //если пришедший selector является нодой (html элементом)
+    if(selector.tagName){
+        this[0] = selector;
+        this.length = 1;
+        return this;
+    }
     //assign позволяет в какой-то объект добавить новые свойства. Первый аргумент - объект, в который добавляем
     Object.assign(this, document.querySelectorAll(selector));
     this.length = document.querySelectorAll(selector).length; //добавим в this свойство lenght

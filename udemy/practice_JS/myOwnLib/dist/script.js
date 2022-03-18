@@ -104,6 +104,13 @@ const $ = function (selector) {
 $.prototype.init = function (selector) {
   if (!selector) {
     return this; //возвращаем просто пустой объект
+  } //если пришедший selector является нодой (html элементом)
+
+
+  if (selector.tagName) {
+    this[0] = selector;
+    this.length = 1;
+    return this;
   } //assign позволяет в какой-то объект добавить новые свойства. Первый аргумент - объект, в который добавляем
 
 
@@ -163,9 +170,169 @@ window.$ = $; //экспортируем функцию для использо�
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core */ "./src/js/lib/core.js");
 /* harmony import */ var _modules_display__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/display */ "./src/js/lib/modules/display.js");
+/* harmony import */ var _modules_classes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/classes */ "./src/js/lib/modules/classes.js");
+/* harmony import */ var _modules_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/actions */ "./src/js/lib/modules/actions.js");
+/* harmony import */ var _modules_attributes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/attributes */ "./src/js/lib/modules/attributes.js");
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_core__WEBPACK_IMPORTED_MODULE_0__["default"]); //Экспортируем ф-цию $, которая будет насыщена ф-циями
+
+/***/ }),
+
+/***/ "./src/js/lib/modules/actions.js":
+/*!***************************************!*\
+  !*** ./src/js/lib/modules/actions.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.on = function (eventName, callbackFunction) {
+  if (!eventName || !callbackFunction) {
+    return this;
+  }
+
+  for (let i = 0; i < this.length; i++) {
+    this[i].addEventListener(eventName, callbackFunction);
+  }
+
+  return this;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.off = function (eventName, callbackFunction) {
+  if (!eventName || !callbackFunction) {
+    return this;
+  }
+
+  for (let i = 0; i < this.length; i++) {
+    this[i].removeEventListener(eventName, callbackFunction);
+  }
+
+  return this;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.click = function (callbackFunction) {
+  for (let i = 0; i < this.length; i++) {
+    if (callbackFunction) {
+      this[i].addEventListener('click', callbackFunction);
+    } else {
+      this[i].click(); //если не передали колбек фукцию, значит выполним виртуальный клик по элементу
+    }
+  }
+
+  return this;
+};
+
+/***/ }),
+
+/***/ "./src/js/lib/modules/attributes.js":
+/*!******************************************!*\
+  !*** ./src/js/lib/modules/attributes.js ***!
+  \******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.onAttribute = function (name, value) {
+  if (!name) {
+    return this;
+  }
+
+  for (let i = 0; i < this.length; i++) {
+    this[i].setAttribute(name, value);
+  }
+
+  return this;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.offAttribute = function (name) {
+  if (!name) {
+    return this;
+  }
+
+  for (let i = 0; i < this.length; i++) {
+    this[i].removeAttribute(name);
+  }
+
+  return this;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.toggleAttribute = function (name, value) {
+  if (!name) {
+    return this;
+  }
+
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].hasAttribute(name)) {
+      this[i].removeAttribute(name);
+    } else {
+      this[i].setAttribute(name, value);
+    }
+  }
+
+  return this;
+};
+
+/***/ }),
+
+/***/ "./src/js/lib/modules/classes.js":
+/*!***************************************!*\
+  !*** ./src/js/lib/modules/classes.js ***!
+  \***************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
+ // передаем параметр с помощью рест оператора, т.к. можно передать разное кол-во классов и мы не знаем, сколько классов нам передали
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addClass = function () {
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].classList || this[i].classList.contains(...arguments)) {
+      continue;
+    }
+
+    this[i].classList.add(...arguments); //это уже не рест, а спрет оператор (оператор разворота)
+  }
+
+  return this;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeClass = function () {
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].classList || !this[i].classList.contains(...arguments)) {
+      continue;
+    }
+
+    this[i].classList.remove(...arguments); //это уже не рест, а спрет оператор (оператор разворота)
+  }
+
+  return this;
+};
+
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.toggleClass = function (className) {
+  for (let i = 0; i < this.length; i++) {
+    if (!this[i].classList) {
+      continue;
+    }
+
+    this[i].classList.toggle(className);
+  }
+
+  return this;
+};
 
 /***/ }),
 
@@ -238,7 +405,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/lib */ "./src/js/lib/lib.js");
 
 $('div').hide().show();
-$('.active').toggle(); // c самовызывающейся функцией
+$('.active').toggle().toggle();
+$('.active').addClass('hello', 'world');
+$('.active').toggleClass('hello');
+$('.active').on('click', sayHello);
+$('.active').off('click', sayHello);
+$('.active').click(sayHello);
+$('button').on('click', function () {
+  $(this).hide().show().toggleClass('active');
+});
+$('.active').onAttribute("disabled", "disabled");
+
+function sayHello() {
+  console.log('Hello');
+} // c самовызывающейся функцией
 // import './lib/core';
 // //$('div'); //получим все дивы, используя нашу ф-цью $ из core.js
 // //получим элементы с классом active. И так как мы из ф-ции $ мы возвращаем объект, мы можем вызвать для объекта ф-цию
